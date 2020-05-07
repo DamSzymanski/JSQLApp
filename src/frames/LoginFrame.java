@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package projektzaliczeniowy;
+package frames;
+
+import classes.DatabaseConnection;
 
 /**
  *
@@ -42,10 +44,10 @@ public class LoginFrame extends javax.swing.JFrame {
         ExitButton = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Universal Database Manager");
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         setName("LoginFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(600, 500));
         setSize(new java.awt.Dimension(600, 500));
 
         LoginPanel.setBorder(new javax.swing.border.MatteBorder(null));
@@ -56,7 +58,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
         PasswordLabel.setText("Password");
 
-        ServerSelectionLabel.setText("Server name/address");
+        ServerSelectionLabel.setText("Server name/IP address");
 
         jLabel4.setText("Custom port");
 
@@ -66,8 +68,18 @@ public class LoginFrame extends javax.swing.JFrame {
         RememberLogin.setText("Remember me");
 
         LoginButton.setText("Login");
+        LoginButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LoginButtonActionPerformed(evt);
+            }
+        });
 
         ExitButton.setText("Exit");
+        ExitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExitButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout LoginPanelLayout = new javax.swing.GroupLayout(LoginPanel);
         LoginPanel.setLayout(LoginPanelLayout);
@@ -93,7 +105,7 @@ public class LoginFrame extends javax.swing.JFrame {
                     .addGroup(LoginPanelLayout.createSequentialGroup()
                         .addGap(44, 44, 44)
                         .addComponent(RememberLogin)))
-                .addGap(0, 181, Short.MAX_VALUE))
+                .addGap(0, 168, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(LoginButton)
@@ -150,6 +162,29 @@ public class LoginFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
+        try {
+            databaseConnection = new DatabaseConnection();
+            databaseConnection.DatabaseUserAuthentication(Login.getText(), Password.getText(), ServerSelection.getSelectedItem().toString(), 3306);
+        }
+        catch(Exception e) {
+            System.out.println("LoginButtonActionPerformed method execution - FAILURE\n" + e);
+        }
+
+    }//GEN-LAST:event_LoginButtonActionPerformed
+
+    private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
+        try {
+            if(databaseConnection.connection.isClosed() == false) {
+                databaseConnection.connection.close();
+            }
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
+        System.exit(0);
+    }//GEN-LAST:event_ExitButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -201,4 +236,5 @@ public class LoginFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
+    private DatabaseConnection databaseConnection;
 }

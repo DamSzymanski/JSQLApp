@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package projektzaliczeniowy;
+package classes;
 
+import frames.LoginFrame;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.event.ActionEvent;
@@ -18,7 +19,7 @@ import javafx.stage.Stage;
  *
  * @author jsarnowski
  */
-public class ProjektZaliczeniowy extends Application {
+public class Main extends Application {
     
     @Override
     public void start(Stage primaryStage) {
