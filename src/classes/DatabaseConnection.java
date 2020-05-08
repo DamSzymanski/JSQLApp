@@ -50,11 +50,11 @@ public class DatabaseConnection {
     
     public int CheckConnectionStatus() {
         try {
-            if(connection.isClosed() == false) {
-                return 0;
+            if(connection.isClosed() != true) {
+                return 1;
             }
             else {
-                return 1;
+                return 0;
             }
         }
         catch(Exception ex) {

@@ -29,7 +29,7 @@ public class Transactions {
                 DatabaseMetaData md = main.databaseConnection.connection.getMetaData();
                 ResultSet rs = md.getTables(null, null, "%", null);
                 while (rs.next()) {
-                    tables.add(rs.getString(3));
+                    System.out.println(rs.getString(3));
                 }
             }
             else {

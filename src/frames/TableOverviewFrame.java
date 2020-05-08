@@ -23,6 +23,7 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         this.setTitle("Universal Database Manager");
+        main.transactions.PrintTables();
     }
 
     /**
