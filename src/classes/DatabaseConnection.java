@@ -19,9 +19,10 @@ public class DatabaseConnection {
     public DatabaseConnection() {
         
     }
-    
+
     public void DatabaseUserAuthentication(String username, String password, String server, int port) {
         try {
+            
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(
                 "jdbc:sqlserver://" + server + "\\MSSQLServer;",
@@ -42,9 +43,23 @@ public class DatabaseConnection {
             if(connection.isClosed() == false) {
                 connection.close();
             }
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
+    public int CheckConnectionStatus() {
+        try {
+            if(connection.isClosed() == false) {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        }
+        catch(Exception ex) {
+            System.out.println(ex);
+        }
+        return 2;
+    }
 }

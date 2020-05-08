@@ -6,6 +6,7 @@
 package frames;
 
 import classes.DatabaseConnection;
+import static classes.Main.*;
 
 /**
  *
@@ -16,7 +17,7 @@ public class LoginFrame extends javax.swing.JFrame {
     /**
      * Creates new form LoginFrame
      */
-    public LoginFrame() {
+    public LoginFrame() {       
         initComponents();
     }
 
@@ -164,8 +165,16 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
         try {
-            databaseConnection = new DatabaseConnection();
-            databaseConnection.DatabaseUserAuthentication(Login.getText(), Password.getText(), ServerSelection.getSelectedItem().toString(), 3306);
+            String pwd = new String(Password.getPassword());
+            main.databaseConnection.DatabaseUserAuthentication(Login.getText(), pwd, ServerSelection.getSelectedItem().toString(), 3306);
+            this.setVisible(false);
+            
+            if(main.databaseConnection.connection.isClosed() != true) {
+                main.tableOverviewFrame = new TableOverviewFrame();
+                main.tableOverviewFrame.setSize(600,500);
+                main.tableOverviewFrame.setVisible(true);
+                this.setVisible(false);    
+            }
         }
         catch(Exception e) {
             System.out.println("LoginButtonActionPerformed method execution - FAILURE\n" + e);
@@ -175,8 +184,8 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
         try {
-            if(databaseConnection.connection.isClosed() == false) {
-                databaseConnection.connection.close();
+            if(main.databaseConnection.connection.isClosed() == false) {
+                main.databaseConnection.connection.close();
             }
         }
         catch(Exception e) {
@@ -236,5 +245,4 @@ public class LoginFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
-    private DatabaseConnection databaseConnection;
 }
