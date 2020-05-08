@@ -9,6 +9,9 @@ package frames;
 import classes.Transactions;
 import static classes.Main.*;
 import java.awt.Component;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ListModel;
 /**
  *
@@ -42,6 +45,8 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         TableElementDetailsPane = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        LogoutMenuButton = new javax.swing.JMenuItem();
+        ExitMenuButton = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setLocation(new java.awt.Point(1, 1));
@@ -108,6 +113,23 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         );
 
         jMenu1.setText("File");
+
+        LogoutMenuButton.setText("Logout");
+        LogoutMenuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LogoutMenuButtonActionPerformed(evt);
+            }
+        });
+        jMenu1.add(LogoutMenuButton);
+
+        ExitMenuButton.setText("Exit");
+        ExitMenuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExitMenuButtonActionPerformed(evt);
+            }
+        });
+        jMenu1.add(ExitMenuButton);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -132,6 +154,31 @@ public class TableOverviewFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void ExitMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitMenuButtonActionPerformed
+        try {
+            if(main.databaseConnection.connection.isClosed() != true) {
+                main.databaseConnection.connection.close();
+            }
+            this.setVisible(false);
+            main.loginFrame.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(TableOverviewFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.exit(0);
+    }//GEN-LAST:event_ExitMenuButtonActionPerformed
+
+    private void LogoutMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutMenuButtonActionPerformed
+        try {
+            if(main.databaseConnection.connection.isClosed() != true) {
+                main.databaseConnection.connection.close();
+            }
+            this.setVisible(false);
+            main.loginFrame.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(TableOverviewFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_LogoutMenuButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -169,6 +216,8 @@ public class TableOverviewFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem ExitMenuButton;
+    private javax.swing.JMenuItem LogoutMenuButton;
     private javax.swing.JPanel TableElementDetailsPane;
     private javax.swing.JTable TableList;
     private javax.swing.JPanel TableListPane;
