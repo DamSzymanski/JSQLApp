@@ -5,6 +5,9 @@
  */
 package frames;
 
+import classes.DatabaseConnection;
+import static classes.Main.main;
+
 /**
  *
  * @author Damian
@@ -15,6 +18,7 @@ public class ActionSelectFrame extends javax.swing.JFrame {
      * Creates new form ActionSelectFrame
      */
     public ActionSelectFrame() {
+        this.setTitle("Main menu");
         initComponents();
     }
 
@@ -27,21 +31,122 @@ public class ActionSelectFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        SelectButton = new javax.swing.JButton();
+        InsertButton = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        TableSelect = new javax.swing.JComboBox<>();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        javax.swing.JMenuItem LogoutOpt = new javax.swing.JMenuItem();
+        AboutOpt = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        SelectButton.setText("Select from table");
+        SelectButton.setActionCommand("runSelectViewbutton");
+        SelectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SelectButtonActionPerformed(evt);
+            }
+        });
+
+        InsertButton.setText("Insert into table");
+
+        jButton4.setText("Update table");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        TableSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        TableSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TableSelectActionPerformed(evt);
+            }
+        });
+
+        jMenu1.setText("File");
+
+        LogoutOpt.setText("Logout");
+        LogoutOpt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LogoutOptActionPerformed(evt);
+            }
+        });
+        jMenu1.add(LogoutOpt);
+
+        AboutOpt.setText("About");
+        AboutOpt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AboutOptActionPerformed(evt);
+            }
+        });
+        jMenu1.add(AboutOpt);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(231, 231, 231)
+                        .addComponent(TableSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(118, 118, 118)
+                        .addComponent(SelectButton)
+                        .addGap(53, 53, 53)
+                        .addComponent(InsertButton)
+                        .addGap(46, 46, 46)
+                        .addComponent(jButton4)))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(TableSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(115, 115, 115)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(SelectButton)
+                    .addComponent(InsertButton)
+                    .addComponent(jButton4))
+                .addContainerGap(240, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void LogoutOptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutOptActionPerformed
+        // TODO add your handling code here:
+        
+        
+        
+    }//GEN-LAST:event_LogoutOptActionPerformed
+
+    private void TableSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TableSelectActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TableSelectActionPerformed
+
+    private void SelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SelectButtonActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void AboutOptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutOptActionPerformed
+
+                main.aboutFrame = new AboutFrame();
+                main.aboutFrame.setSize(600,500);
+                main.aboutFrame.setVisible(true);
+    }//GEN-LAST:event_AboutOptActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +184,12 @@ public class ActionSelectFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem AboutOpt;
+    private javax.swing.JButton InsertButton;
+    private javax.swing.JButton SelectButton;
+    private javax.swing.JComboBox<String> TableSelect;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }
