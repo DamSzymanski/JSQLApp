@@ -50,9 +50,10 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
 
         setLocation(new java.awt.Point(1, 1));
-        setMinimumSize(new java.awt.Dimension(600, 500));
+        setMinimumSize(new java.awt.Dimension(1280, 1024));
         setName("TableOverviewFrame"); // NOI18N
-        setSize(new java.awt.Dimension(600, 500));
+        setPreferredSize(new java.awt.Dimension(1280, 1024));
+        setSize(new java.awt.Dimension(1280, 1024));
 
         TableListPane.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -93,7 +94,7 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         );
         TableListPaneLayout.setVerticalGroup(
             TableListPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(TableListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+            .addComponent(TableListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
         );
 
         TableListScrollPane.getAccessibleContext().setAccessibleName("TableListScrollPane");
@@ -109,7 +110,7 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         );
         TableElementDetailsPaneLayout.setVerticalGroup(
             TableElementDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 232, Short.MAX_VALUE)
+            .addGap(0, 291, Short.MAX_VALUE)
         );
 
         jMenu1.setText("File");
