@@ -39,17 +39,15 @@ public class TableSelectFrame extends javax.swing.JFrame {
      * Creates new form ActionSelectFrame
      */
     public TableSelectFrame() throws SQLException {
-                initComponents();
-
+        initComponents();
         this.setTitle("Main menu");
         setLocationRelativeTo(null);
         ResultSet rs = main.transactions.GetDBList();
-        List<String> databases = new ArrayList<String>();
-        
+        List<String> databases = new ArrayList<String>();     
         while (rs.next()) {
-        databases.add(rs.getString(1));
+            databases.add(rs.getString(1));
         }
-              DbSelect.setModel(new DefaultComboBoxModel(databases.toArray()));
+        DbSelect.setModel(new DefaultComboBoxModel(databases.toArray()));
               
     }
 
@@ -72,7 +70,7 @@ public class TableSelectFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        SelectButton.setText("Select table");
+        SelectButton.setText("CONFIRM");
         SelectButton.setActionCommand("runSelectViewbutton");
         SelectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -80,14 +78,14 @@ public class TableSelectFrame extends javax.swing.JFrame {
             }
         });
 
-        DbSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        DbSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select database" }));
         DbSelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DbSelectActionPerformed(evt);
             }
         });
 
-        tableSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        tableSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select table" }));
         tableSelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tableSelectActionPerformed(evt);
@@ -144,9 +142,7 @@ public class TableSelectFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LogoutOptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutOptActionPerformed
-        // TODO add your handling code here:
-        
-                try {
+        try {
             if(main.databaseConnection.connection.isClosed() != true) {
                 main.databaseConnection.connection.close();
             }
@@ -154,18 +150,13 @@ public class TableSelectFrame extends javax.swing.JFrame {
             main.loginFrame.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(TableOverviewFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        }    
     }//GEN-LAST:event_LogoutOptActionPerformed
 
     private void DbSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DbSelectActionPerformed
-        // TODO add your handling code here:
-        
         String value=DbSelect.getSelectedItem().toString();
         ResultSet rs=main.transactions.GetTableListForDb(value);
-        
-         List<String> tables = new ArrayList<String>();
-        
+        List<String> tables = new ArrayList<String>();
         try {
             while (rs.next()) {
                 tables.add(rs.getString(1));
@@ -176,44 +167,34 @@ public class TableSelectFrame extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(TableSelectFrame.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex.toString());
-        }
-        
+        }   
     }//GEN-LAST:event_DbSelectActionPerformed
 
     private void SelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectButtonActionPerformed
-
-        if(tableSelected&&dbSelected&&selectedDb!=""&&selectedTable!=""){
-            
+        if(tableSelected&&dbSelected&&selectedDb!=""&&selectedTable!=""){            
             main.tableOverviewFrame=new TableOverviewFrame(selectedDb,selectedTable);
             main.tableOverviewFrame.setSize(600,600);
             main.tableOverviewFrame.setVisible(true);
             main.tableOverviewFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-
             this.setVisible(false);
-            
-            
         }
         else
             JOptionPane.showMessageDialog(null, "Wybierz bazę i tabelę");
-        
-        
     }//GEN-LAST:event_SelectButtonActionPerformed
 
     private void AboutOptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutOptActionPerformed
-
-                main.aboutFrame = new AboutFrame();
-                main.aboutFrame.setSize(600,500);                
-                main.aboutFrame.setResizable(false);
-                main.aboutFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-                main.aboutFrame.setVisible(true);
+        main.aboutFrame = new AboutFrame();
+        main.aboutFrame.setSize(600,500);                
+        main.aboutFrame.setResizable(false);
+        main.aboutFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        main.aboutFrame.setVisible(true);
     }//GEN-LAST:event_AboutOptActionPerformed
 
     private void tableSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableSelectActionPerformed
-        // TODO add your handling code here:
-           String value=tableSelect.getSelectedItem().toString();
-           selectedTable=value;
-           if(value!=null)
-               tableSelected=true;
+        String value=tableSelect.getSelectedItem().toString();
+        selectedTable=value;
+        if(value!=null)
+          tableSelected=true;
 
     }//GEN-LAST:event_tableSelectActionPerformed
 

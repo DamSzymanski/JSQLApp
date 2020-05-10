@@ -31,7 +31,7 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         this.currentTable=tableName;
         setLocationRelativeTo(null);
         this.setTitle("Universal Database Manager");
-        main.transactions.GetTables();
+        //main.transactions.GetTables();
     }
     /**
      * This method is called from within the constructor to initialize the form.
