@@ -6,8 +6,9 @@
 package classes;
 
 import frames.AboutFrame;
-import frames.ActionSelectFrame;
+import frames.TableSelectFrame;
 import frames.LoginFrame;
+import frames.TableOverviewFrame;
 import frames.TableOverviewFrame;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -54,7 +55,7 @@ public class Main extends Application {
     public LoginFrame loginFrame;
     public TableOverviewFrame tableOverviewFrame;
     public AboutFrame aboutFrame;
-    public ActionSelectFrame actionSelectFrame;
+    public TableSelectFrame tableSelectFrame;
     public DatabaseConnection databaseConnection;
     public Transactions transactions;
 }

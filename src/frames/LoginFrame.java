@@ -170,10 +170,11 @@ public class LoginFrame extends javax.swing.JFrame {
             this.setVisible(false);
             
             if(main.databaseConnection.connection.isClosed() != true) {
-                main.tableOverviewFrame = new TableOverviewFrame();
-                main.tableOverviewFrame.setSize(600,500);
-                main.tableOverviewFrame.setVisible(true);
-                this.setVisible(false);    
+              main.tableSelectFrame=new TableSelectFrame();
+              main.tableSelectFrame.setSize(400,400);
+              main.tableSelectFrame.setResizable(false);
+              main.tableSelectFrame.setVisible(true);
+              this.setVisible(false);    
             }
         }
         catch(Exception e) {

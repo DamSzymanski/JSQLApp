@@ -19,6 +19,9 @@ import javax.swing.ListModel;
  */
 public class TableOverviewFrame extends javax.swing.JFrame {
 
+    private String currentDb;
+    private String currentTable;
+
     /**
      * Creates new form TableOverviewFrame
      */
@@ -28,7 +31,14 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         this.setTitle("Universal Database Manager");
         main.transactions.PrintTables();
     }
-
+    public TableOverviewFrame(String dbName,String tableName) {
+        initComponents();
+        this.currentDb=dbName;
+        this.currentTable=tableName;
+        setLocationRelativeTo(null);
+        this.setTitle("Universal Database Manager");
+        main.transactions.PrintTables();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
