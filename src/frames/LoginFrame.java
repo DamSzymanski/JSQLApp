@@ -7,6 +7,8 @@ package frames;
 
 import classes.DatabaseConnection;
 import static classes.Main.*;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 
 /**
  *
@@ -49,6 +51,7 @@ public class LoginFrame extends javax.swing.JFrame {
         setTitle("Universal Database Manager");
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         setName("LoginFrame"); // NOI18N
+        setResizable(false);
         setSize(new java.awt.Dimension(600, 500));
 
         LoginPanel.setBorder(new javax.swing.border.MatteBorder(null));
@@ -88,8 +91,14 @@ public class LoginFrame extends javax.swing.JFrame {
             LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginPanelLayout.createSequentialGroup()
+                .addContainerGap(243, Short.MAX_VALUE)
+                .addComponent(LoginButton)
+                .addGap(18, 18, 18)
+                .addComponent(ExitButton)
+                .addGap(229, 229, 229))
             .addGroup(LoginPanelLayout.createSequentialGroup()
-                .addGap(168, 168, 168)
+                .addGap(136, 136, 136)
                 .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(LoginPanelLayout.createSequentialGroup()
                         .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,20 +115,14 @@ public class LoginFrame extends javax.swing.JFrame {
                     .addGroup(LoginPanelLayout.createSequentialGroup()
                         .addGap(44, 44, 44)
                         .addComponent(RememberLogin)))
-                .addGap(0, 168, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(LoginButton)
-                .addGap(18, 18, 18)
-                .addComponent(ExitButton)
-                .addGap(229, 229, 229))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         LoginPanelLayout.setVerticalGroup(
             LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LoginPanelLayout.createSequentialGroup()
                 .addGap(80, 80, 80)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LoginLabel)
                     .addComponent(Login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -137,16 +140,17 @@ public class LoginFrame extends javax.swing.JFrame {
                     .addComponent(CustomPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13)
                 .addComponent(RememberLogin)
-                .addGap(18, 18, 18)
+                .addGap(17, 17, 17)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LoginButton)
                     .addComponent(ExitButton))
-                .addContainerGap(211, Short.MAX_VALUE))
+                .addContainerGap(207, Short.MAX_VALUE))
         );
 
         LoginLabel.getAccessibleContext().setAccessibleDescription("");
+        LoginButton.getAccessibleContext().setAccessibleName("LoginButton");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -158,6 +162,11 @@ public class LoginFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(LoginPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+        LoginPanel.getAccessibleContext().setAccessibleName("LoginPanel");
+
+        getAccessibleContext().setAccessibleName("LoginFrame");
+        getAccessibleContext().setAccessibleDescription("");
 
         pack();
         setLocationRelativeTo(null);
@@ -194,7 +203,7 @@ public class LoginFrame extends javax.swing.JFrame {
         }
         System.exit(0);
     }//GEN-LAST:event_ExitButtonActionPerformed
-
+    
     /**
      * @param args the command line arguments
      */
@@ -246,4 +255,5 @@ public class LoginFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
+
 }
