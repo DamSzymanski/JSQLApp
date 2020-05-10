@@ -22,7 +22,7 @@ public class Transactions {
 
     }
     
-    public void PrintTables() {
+    public void GetTables() {
         try {
             statusCode = main.databaseConnection.CheckConnectionStatus();
             if(statusCode == 1) {
