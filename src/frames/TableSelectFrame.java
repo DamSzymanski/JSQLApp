@@ -42,7 +42,7 @@ public class TableSelectFrame extends javax.swing.JFrame {
                 initComponents();
 
         this.setTitle("Main menu");
-
+        setLocationRelativeTo(null);
         ResultSet rs = main.transactions.GetDBList();
         List<String> databases = new ArrayList<String>();
         
