@@ -25,12 +25,6 @@ public class TableOverviewFrame extends javax.swing.JFrame {
     /**
      * Creates new form TableOverviewFrame
      */
-    public TableOverviewFrame() {
-        initComponents();
-        setLocationRelativeTo(null);
-        this.setTitle("Universal Database Manager");
-        main.transactions.PrintTables();
-    }
     public TableOverviewFrame(String dbName,String tableName) {
         initComponents();
         this.currentDb=dbName;
