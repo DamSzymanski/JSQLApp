@@ -25,7 +25,7 @@ public class DatabaseConnection {
             
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(
-                "jdbc:sqlserver://" + server + "\\MSSQLServer;",
+                "jdbc:sqlserver://" + server+";",
                 username, password
             );                
             System.out.println(connection);

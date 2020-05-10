@@ -41,5 +41,45 @@ public class Transactions {
         }
     }
     
+    public ResultSet GetDBList(){
+                
+        try{
+             statusCode = main.databaseConnection.CheckConnectionStatus();
+            if(statusCode == 1) {
+              Statement stmt = main.databaseConnection.connection.createStatement();
+        ResultSet res = stmt.executeQuery("SELECT name, database_id FROM sys.databases;  ");
+        return res;
+            }
+                 else {
+                System.out.println("Connection not established - return code " + statusCode);
+            }
+        }
+        catch(Exception ex){
+         System.out.println("Connection exception  " + ex.toString());
+         ex.printStackTrace();
+
+        }
+        return null;
+    }
+       public ResultSet GetTableListForDb(String dbName){
+                
+        try{
+             statusCode = main.databaseConnection.CheckConnectionStatus();
+            if(statusCode == 1) {
+              Statement stmt = main.databaseConnection.connection.createStatement();
+        ResultSet res = stmt.executeQuery("use "+dbName+" SELECT TABLE_NAME FROM information_schema.tables;");
+        return res;
+            }
+                 else {
+                System.out.println("Connection not established - return code " + statusCode);
+            }
+        }
+        catch(Exception ex){
+         System.out.println("Connection exception  " + ex.toString());
+         ex.printStackTrace();
+
+        }
+        return null;
+    }
     private int statusCode;
 }
