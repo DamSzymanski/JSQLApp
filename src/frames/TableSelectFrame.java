@@ -22,6 +22,7 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
+import models.EnginesEnum;
 
 /**
  *
@@ -34,7 +35,7 @@ public class TableSelectFrame extends javax.swing.JFrame {
     
     private String selectedDb="";
     private String selectedTable="";
-
+    private ResultSet rs;
     /**
      * Creates new form ActionSelectFrame
      */
@@ -42,7 +43,12 @@ public class TableSelectFrame extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Main menu");
         setLocationRelativeTo(null);
-        ResultSet rs = main.transactions.GetDBList();
+        
+        if(main.engine.equals(EnginesEnum.Engines.MSSQL.toString()))
+        rs = main.transactions.GetDBList();
+        else if(main.engine.equals(EnginesEnum.Engines.MySQL.toString()))
+        rs = main.mysqlTransactions.GetDBList();
+
         List<String> databases = new ArrayList<String>();     
         while (rs.next()) {
             databases.add(rs.getString(1));

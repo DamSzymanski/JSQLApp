@@ -7,8 +7,13 @@ package frames;
 
 import classes.DatabaseConnection;
 import static classes.Main.*;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import models.EnginesEnum.Engines;
 
 /**
  *
@@ -21,6 +26,7 @@ public class LoginFrame extends javax.swing.JFrame {
      */
     public LoginFrame() {       
         initComponents();
+        dbEngineSelect.setModel(new DefaultComboBoxModel(Engines.values()));
     }
 
     /**
@@ -46,6 +52,7 @@ public class LoginFrame extends javax.swing.JFrame {
         LoginButton = new javax.swing.JButton();
         ExitButton = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
+        dbEngineSelect = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Universal Database Manager");
@@ -85,6 +92,13 @@ public class LoginFrame extends javax.swing.JFrame {
             }
         });
 
+        dbEngineSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        dbEngineSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dbEngineSelectActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout LoginPanelLayout = new javax.swing.GroupLayout(LoginPanel);
         LoginPanel.setLayout(LoginPanelLayout);
         LoginPanelLayout.setHorizontalGroup(
@@ -101,28 +115,32 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addGap(136, 136, 136)
                 .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(LoginPanelLayout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addComponent(RememberLogin))
+                    .addGroup(LoginPanelLayout.createSequentialGroup()
                         .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(ServerSelectionLabel)
                             .addComponent(LoginLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(PasswordLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(34, 34, 34)
-                        .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(Password, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(CustomPort, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Login, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ServerSelection, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(LoginPanelLayout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(RememberLogin)))
+                        .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(dbEngineSelect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(Password, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(CustomPort, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(Login, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(ServerSelection, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         LoginPanelLayout.setVerticalGroup(
             LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LoginPanelLayout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(67, 67, 67)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(dbEngineSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LoginLabel)
                     .addComponent(Login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -146,7 +164,7 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LoginButton)
                     .addComponent(ExitButton))
-                .addContainerGap(207, Short.MAX_VALUE))
+                .addContainerGap(186, Short.MAX_VALUE))
         );
 
         LoginLabel.getAccessibleContext().setAccessibleDescription("");
@@ -175,9 +193,12 @@ public class LoginFrame extends javax.swing.JFrame {
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
         try {
             String pwd = new String(Password.getPassword());
+            String selectedEngine=dbEngineSelect.getSelectedItem().toString();
+            if(selectedEngine==Engines.MSSQL.toString()){
             main.databaseConnection.DatabaseUserAuthentication(Login.getText(), pwd, ServerSelection.getSelectedItem().toString(), 3306);
             this.setVisible(false);
-            
+            main.engine=selectedEngine;
+
             if(main.databaseConnection.connection.isClosed() != true) {
               main.tableSelectFrame=new TableSelectFrame();
               main.tableSelectFrame.setSize(400,400);
@@ -185,6 +206,22 @@ public class LoginFrame extends javax.swing.JFrame {
               main.tableSelectFrame.setVisible(true);
               this.setVisible(false);    
             }
+            }
+            else if(selectedEngine==Engines.MySQL.toString()){
+                 main.mysqlDbConnection.DatabaseUserAuthentication(Login.getText(), pwd, ServerSelection.getSelectedItem().toString(), 3306,"mysql");
+           // this.setVisible(false);
+            main.engine=selectedEngine;
+           //if(main.mysqlDbConnection.connection.isClosed() != true) {
+              main.tableSelectFrame=new TableSelectFrame();
+              main.tableSelectFrame.setSize(400,400);
+              main.tableSelectFrame.setResizable(false);
+              main.tableSelectFrame.setVisible(true);   
+           // }
+            }
+            else
+            JOptionPane.showMessageDialog(null, "Wybierz silnik bazodanowy");
+
+            
         }
         catch(Exception e) {
             System.out.println("LoginButtonActionPerformed method execution - FAILURE\n" + e);
@@ -203,6 +240,10 @@ public class LoginFrame extends javax.swing.JFrame {
         }
         System.exit(0);
     }//GEN-LAST:event_ExitButtonActionPerformed
+
+    private void dbEngineSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dbEngineSelectActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dbEngineSelectActionPerformed
     
     /**
      * @param args the command line arguments
@@ -251,6 +292,7 @@ public class LoginFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox RememberLogin;
     private javax.swing.JComboBox<String> ServerSelection;
     private javax.swing.JLabel ServerSelectionLabel;
+    private javax.swing.JComboBox<String> dbEngineSelect;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
