@@ -27,7 +27,7 @@ public class MySQLTransactions {
     
     public void GetDatabases() {
         try {            
-            statusCode = main.databaseConnection.CheckConnectionStatus();
+            statusCode = main.mysqlDbConnection.CheckConnectionStatus();
             if(statusCode == 1) {
                 String query = "SELECT name, create_date FROM sys.databases";
                 Statement statement = main.databaseConnection.connection.createStatement();
@@ -49,10 +49,12 @@ public class MySQLTransactions {
     
     public ResultSet GetTableListForDb(String dbName){ 
         try{
-            statusCode = main.databaseConnection.CheckConnectionStatus();
+            statusCode = main.mysqlDbConnection.CheckConnectionStatus();
             if(statusCode == 1) {
-                Statement stmt = main.databaseConnection.connection.createStatement();
-                ResultSet res = stmt.executeQuery("use "+dbName+"; show tables");
+                Statement stmt = main.mysqlDbConnection.connection.createStatement();
+                Statement stmt2 = main.mysqlDbConnection.connection.createStatement();
+                   ResultSet rs1=stmt.executeQuery("use "+dbName+";");
+                ResultSet res = stmt.executeQuery("show tables");
                 return res;
             }
             else {
@@ -68,9 +70,9 @@ public class MySQLTransactions {
        
     public ResultSet GetDBList(){
         try{
-            statusCode = main.databaseConnection.CheckConnectionStatus();
+            statusCode = main.mysqlDbConnection.CheckConnectionStatus();
             if(statusCode == 1) {
-                Statement stmt = main.databaseConnection.connection.createStatement();
+                Statement stmt = main.mysqlDbConnection.connection.createStatement();
                 ResultSet res = stmt.executeQuery("SHOW DATABASES;");
                 return res;
             }

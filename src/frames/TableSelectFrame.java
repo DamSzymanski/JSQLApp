@@ -161,7 +161,20 @@ public class TableSelectFrame extends javax.swing.JFrame {
 
     private void DbSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DbSelectActionPerformed
         String value=DbSelect.getSelectedItem().toString();
-        ResultSet rs=main.transactions.GetTableListForDb(value);
+         ResultSet rs;
+     switch(EnginesEnum.Engines.valueOf(main.engine)) {
+  case MSSQL:
+         rs=main.transactions.GetTableListForDb(value);
+
+    break;
+  case MySQL:
+            rs=main.mysqlTransactions.GetTableListForDb(value);
+
+    break;
+  default:
+    rs=null;
+
+}
         List<String> tables = new ArrayList<String>();
         try {
             while (rs.next()) {
