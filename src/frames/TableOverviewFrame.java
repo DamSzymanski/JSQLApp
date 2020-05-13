@@ -25,19 +25,13 @@ public class TableOverviewFrame extends javax.swing.JFrame {
     /**
      * Creates new form TableOverviewFrame
      */
-    public TableOverviewFrame() {
-        initComponents();
-        setLocationRelativeTo(null);
-        this.setTitle("Universal Database Manager");
-        main.transactions.PrintTables();
-    }
     public TableOverviewFrame(String dbName,String tableName) {
         initComponents();
         this.currentDb=dbName;
         this.currentTable=tableName;
         setLocationRelativeTo(null);
         this.setTitle("Universal Database Manager");
-        main.transactions.PrintTables();
+        //main.transactions.GetTables();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -219,11 +213,6 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TableOverviewFrame().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

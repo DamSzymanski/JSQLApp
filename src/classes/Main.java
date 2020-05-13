@@ -38,7 +38,9 @@ public class Main extends Application {
         loginFrame.setVisible(true);
         
         databaseConnection = new DatabaseConnection();
+        mysqlDbConnection=new MysqlConnection();
         transactions = new Transactions();
+        mysqlTransactions=new MySQLTransactions();
     }
 
     /**
@@ -51,11 +53,18 @@ public class Main extends Application {
     public DatabaseConnection getDatabaseConnection() {
         return databaseConnection;
     }
-    
+        
+    public MysqlConnection getMysqlDatabaseConnection() {
+        return mysqlDbConnection;
+    }
     public LoginFrame loginFrame;
     public TableOverviewFrame tableOverviewFrame;
     public AboutFrame aboutFrame;
     public TableSelectFrame tableSelectFrame;
     public DatabaseConnection databaseConnection;
     public Transactions transactions;
+    //mysql
+    public String engine;
+    public MysqlConnection mysqlDbConnection;
+    public MySQLTransactions mysqlTransactions;
 }
