@@ -7,9 +7,16 @@ package classes;
 
 import classes.DatabaseConnection;
 import static classes.Main.*;
+import frames.TableSelectFrame;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import models.DbInfo;
 
 /**
@@ -22,31 +29,7 @@ public class MySQLTransactions {
     public MySQLTransactions() {
 
     }
-    
-  
-    
-    public void GetDatabases() {
-        try {            
-            statusCode = main.mysqlDbConnection.CheckConnectionStatus();
-            if(statusCode == 1) {
-                String query = "SELECT name, create_date FROM sys.databases";
-                Statement statement = main.databaseConnection.connection.createStatement();
-                ResultSet rs = statement.executeQuery(query);
-                while(rs.next()) {
-                    DbInfo database = new DbInfo(rs.getString("name"), rs.getString("create_date"));
-                    //databases.add(database);
-                }
-            }
-            else {
-                System.out.println("Connection not established - return code " + statusCode);
-            }
-        }
-        catch(Exception ex) {
-            System.out.println(ex);
-        }
-    }
-    
-    
+    //pobranie listy tabel dla podanej bazy
     public ResultSet GetTableListForDb(String dbName){ 
         try{
             statusCode = main.mysqlDbConnection.CheckConnectionStatus();
@@ -67,7 +50,7 @@ public class MySQLTransactions {
         }
         return null;
     }
-       
+       //listowanie baz danych 
     public ResultSet GetDBList(){
         try{
             statusCode = main.mysqlDbConnection.CheckConnectionStatus();
@@ -86,6 +69,54 @@ public class MySQLTransactions {
         }
         return null;
     }
+    //pobranie wszystkich rekordow dla danej tabeli
+        public ResultSet SelectAll(String dbName,String tableName){
+        try{
+            statusCode = main.mysqlDbConnection.CheckConnectionStatus();
+            if(statusCode == 1) {
+                try{
+                Statement stmt = main.mysqlDbConnection.connection.createStatement();
+                //konieczne zaznaczenie, którą bazę wykorzystujemuy
+                ResultSet rs1=stmt.executeQuery("use "+dbName+";");
+                ResultSet res = stmt.executeQuery("select * from "+tableName+";");
+                
+                return res;
+
+                }catch (Exception ex){
+                    
+                }
+            }
+            else {
+                System.out.println("Connection not established - return code " + statusCode);
+            }
+        }
+        catch(Exception ex){
+            System.out.println("Connection exception  " + ex.toString());
+            ex.printStackTrace();
+        }
+        return null;
+    } 
         
+        
+      //usuwanie z bazy
+        public ResultSet Delete(String dbName,String tableName,String columnName,String conditionValue){
+                try{
+            statusCode = main.mysqlDbConnection.CheckConnectionStatus();
+            if(statusCode == 1) {
+                Statement stmt = main.mysqlDbConnection.connection.createStatement();
+                ResultSet useRes = stmt.executeQuery("use "+dbName+";");
+                ResultSet res = stmt.executeQuery("delete from "+tableName+" where "+columnName+"="+conditionValue);
+                return res;
+            }
+            else {
+                System.out.println("Connection not established - return code " + statusCode);
+            }
+        }
+        catch(Exception ex){
+            System.out.println("Connection exception  " + ex.toString());
+            ex.printStackTrace();
+        }
+        return null;
+        }
     private int statusCode;
 }
