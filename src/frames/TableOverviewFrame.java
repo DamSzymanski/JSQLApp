@@ -9,10 +9,17 @@ package frames;
 import classes.Transactions;
 import static classes.Main.*;
 import java.awt.Component;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable;
 import javax.swing.ListModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 /**
  *
  * @author jsarnowski
@@ -31,7 +38,56 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         this.currentTable=tableName;
         setLocationRelativeTo(null);
         this.setTitle("Universal Database Manager");
-        //main.transactions.GetTables();
+        
+        ResultSet res=main.mysqlTransactions.SelectAll(dbName, tableName);
+        
+           
+
+        
+        
+                try {
+                DefaultTableModel tableData=new DefaultTableModel();
+
+                //liczenie kolumn
+                ResultSetMetaData md=res.getMetaData();
+                int columnCount=md.getColumnCount();
+                
+                //nagłówki kolumn
+                List<String> tableHeaders = new ArrayList<String>();
+                     for(int i=1;i<=columnCount;i++){
+                         tableHeaders.add(md.getColumnName(i));
+                        }
+                        columnCount++;
+
+                        tableHeaders.add("Actions");
+
+                //test data
+                Object[][] data = new Object[][] {{2, "Rambo", 70.0, false },{3, "Zorro", 60.0, true },};
+                
+                
+                  List<Object[]> table = new ArrayList<>();
+                    while( res.next()) {
+                     String[] row = new String[columnCount];
+                        for( int iCol = 1; iCol < columnCount; iCol++ ){
+                            Object obj = res.getObject( iCol );
+                            row[iCol-1] = (obj == null) ?null:obj.toString();
+                            System.out.println(obj.toString());
+                                }
+                            table.add( row );
+                                }
+                
+               data=new Object[columnCount][];
+               table.toArray(data);
+                        dataOverviewTable.setModel(new DefaultTableModel(table.toArray(data),tableHeaders.toArray()));
+
+
+                
+            } 
+            catch (SQLException ex) {
+                Logger.getLogger(TableSelectFrame.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex.toString());
+            } 
+               
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,6 +103,8 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         TableListScrollPane = new javax.swing.JScrollPane();
         TableList = new javax.swing.JTable();
         TableElementDetailsPane = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        dataOverviewTable = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         LogoutMenuButton = new javax.swing.JMenuItem();
@@ -94,11 +152,11 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         TableListPane.setLayout(TableListPaneLayout);
         TableListPaneLayout.setHorizontalGroup(
             TableListPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(TableListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
+            .addComponent(TableListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 774, Short.MAX_VALUE)
         );
         TableListPaneLayout.setVerticalGroup(
             TableListPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(TableListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
+            .addComponent(TableListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
         );
 
         TableListScrollPane.getAccessibleContext().setAccessibleName("TableListScrollPane");
@@ -110,12 +168,26 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         TableElementDetailsPane.setLayout(TableElementDetailsPaneLayout);
         TableElementDetailsPaneLayout.setHorizontalGroup(
             TableElementDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 712, Short.MAX_VALUE)
+            .addGap(0, 774, Short.MAX_VALUE)
         );
         TableElementDetailsPaneLayout.setVerticalGroup(
             TableElementDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 291, Short.MAX_VALUE)
+            .addGap(0, 139, Short.MAX_VALUE)
         );
+
+        dataOverviewTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        dataOverviewTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(dataOverviewTable);
 
         jMenu1.setText("File");
 
@@ -148,11 +220,14 @@ public class TableOverviewFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(TableListPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(TableElementDetailsPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(TableListPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(TableElementDetailsPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -215,6 +290,7 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         /* Create and display the form */
     }
 
+               
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem ExitMenuButton;
     private javax.swing.JMenuItem LogoutMenuButton;
@@ -222,9 +298,11 @@ public class TableOverviewFrame extends javax.swing.JFrame {
     private javax.swing.JTable TableList;
     private javax.swing.JPanel TableListPane;
     private javax.swing.JScrollPane TableListScrollPane;
+    private javax.swing.JTable dataOverviewTable;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
