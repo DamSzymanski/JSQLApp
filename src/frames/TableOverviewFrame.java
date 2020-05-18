@@ -219,9 +219,16 @@ public class TableOverviewFrame extends javax.swing.JFrame {
 
     private void ExitMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitMenuButtonActionPerformed
         try {
-            if(appInit.mssqlConnection.connection.isClosed() != true) {
-                appInit.mssqlConnection.connection.close();
+            if(appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
+                if(appInit.mssqlConnection.connection.isClosed() != true) {
+                    appInit.mssqlConnection.connection.close();
+                }
             }
+            else if(appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
+                if(appInit.mysqlConnection.connection.isClosed() != true) {
+                    appInit.mysqlConnection.connection.close();
+                }
+            }   
         } catch (SQLException ex) {
             Logger.getLogger(TableOverviewFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -230,9 +237,16 @@ public class TableOverviewFrame extends javax.swing.JFrame {
 
     private void LogoutMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutMenuButtonActionPerformed
         try {
-            if(appInit.mssqlConnection.connection.isClosed() != true) {
-                appInit.mssqlConnection.connection.close();
+            if(appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
+                if(appInit.mssqlConnection.connection.isClosed() != true) {
+                    appInit.mssqlConnection.connection.close();
+                }
             }
+            else if(appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
+                if(appInit.mysqlConnection.connection.isClosed() != true) {
+                    appInit.mysqlConnection.connection.close();
+                }
+            }  
             this.setVisible(false);
             appInit.loginFrame.setVisible(true);
         } catch (SQLException ex) {
