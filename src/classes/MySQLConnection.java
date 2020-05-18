@@ -28,15 +28,8 @@ public class MySQLConnection {
            //nie działa ale skopiownay do managera działa
           // connection = DriverManager.getConnection("jdbc:mysql://"+server+""+String.valueOf(port)+"/"+dbName+"&autoReconnect=true&failOverReadOnly=false&maxReconnects=10",username, password);
           //działa ale not established
-          if(port != 0) {
-            connection = DriverManager.getConnection("jdbc:mysql://" + server + ":" + port, username, password);  
-          }
-          else {
-              connection = DriverManager.getConnection("jdbc:mysql://" + server, username, password);
-          }
-            
-
-            System.out.println(connection+"Eee");
+          connection = DriverManager.getConnection("jdbc:mysql://" + server + ":" + port, username, password);
+          System.out.println(connection+"Eee");
         }
         catch(Exception e) {
             System.out.println(e);

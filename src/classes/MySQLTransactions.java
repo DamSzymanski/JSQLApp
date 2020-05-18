@@ -77,7 +77,8 @@ public class MySQLTransactions {
                 try{
                 Statement stmt = appInit.mysqlConnection.connection.createStatement();
                 //konieczne zaznaczenie, którą bazę wykorzystujemuy
-                ResultSet res = stmt.executeQuery("use " + dbName + "; select * from " + tableName+ ";");
+                ResultSet dbSelection = stmt.executeQuery("use " + dbName + ";");
+                ResultSet res = stmt.executeQuery("select * from " + tableName+ ";");
                 
                 return res;
 
@@ -104,7 +105,7 @@ public class MySQLTransactions {
             statusCode = appInit.mysqlConnection.CheckConnectionStatus();
             if(statusCode == 1) {
                 Statement stmt = appInit.mysqlConnection.connection.createStatement();
-                ResultSet useRes = stmt.executeQuery("use "+dbName+";");
+                ResultSet dbSelection = stmt.executeQuery("use " + dbName + ";");
                 ResultSet res = stmt.executeQuery("delete from "+tableName+" where "+columnName+"="+conditionValue);
                 return res;
             }
