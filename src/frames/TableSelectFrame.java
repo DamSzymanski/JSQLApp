@@ -6,8 +6,7 @@
 package frames;
 
 import classes.DataBaseSelectModel;
-import classes.DatabaseConnection;
-import static classes.Main.main;
+import classes.MSSQLConnection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,6 +22,8 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import models.EnginesEnum;
+import static classes.AppInit.appInit;
+import static classes.AppInit.main;
 
 /**
  *
@@ -35,7 +36,6 @@ public class TableSelectFrame extends javax.swing.JFrame {
     
     private String selectedDb="";
     private String selectedTable="";
-    private ResultSet rs;
     /**
      * Creates new form ActionSelectFrame
      */
@@ -44,17 +44,36 @@ public class TableSelectFrame extends javax.swing.JFrame {
         this.setTitle("Main menu");
         setLocationRelativeTo(null);
         
-        if(main.engine.equals(EnginesEnum.Engines.MSSQL.toString()))
-        rs = main.transactions.GetDBList();
-        else if(main.engine.equals(EnginesEnum.Engines.MySQL.toString()))
-        rs = main.mysqlTransactions.GetDBList();
+        ResultSet dbResult = null;
+        if(appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString()))
+        dbResult = appInit.mssqlTransactions.GetDBList();
+        else if(appInit.engine.equals(EnginesEnum.Engines.MySQL.toString()))
+        dbResult = appInit.mysqlTransactions.GetDBList();
 
         List<String> databases = new ArrayList<String>();     
-        while (rs.next()) {
-            databases.add(rs.getString(1));
+        while (dbResult.next()) {
+            databases.add(dbResult.getString(1));
         }
         DbSelect.setModel(new DefaultComboBoxModel(databases.toArray()));
-              
+        
+        String value=DbSelect.getSelectedItem().toString();
+        ResultSet tableResult = null;
+        if(appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString()))
+        tableResult=appInit.mssqlTransactions.GetTableListForDb(value);
+        else if(appInit.engine.equals(EnginesEnum.Engines.MySQL.toString()))
+        tableResult=appInit.mysqlTransactions.GetTableListForDb(value);
+        List<String> tables = new ArrayList<String>();
+        try {
+            while (tableResult.next()) {
+                tables.add(tableResult.getString(1));
+            }
+            selectedDb=value;
+            dbSelected=true;
+        } catch (SQLException ex) {
+            Logger.getLogger(TableSelectFrame.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
+        }   
+        tableSelect.setModel(new DefaultComboBoxModel(tables.toArray()));
     }
 
     /**
@@ -149,11 +168,11 @@ public class TableSelectFrame extends javax.swing.JFrame {
 
     private void LogoutOptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutOptActionPerformed
         try {
-            if(main.databaseConnection.connection.isClosed() != true) {
-                main.databaseConnection.connection.close();
+            if(appInit.mssqlConnection.connection.isClosed() != true) {
+                appInit.mssqlConnection.connection.close();
             }
             this.setVisible(false);
-            main.loginFrame.setVisible(true);
+            appInit.loginFrame.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(TableOverviewFrame.class.getName()).log(Level.SEVERE, null, ex);
         }    
@@ -161,20 +180,11 @@ public class TableSelectFrame extends javax.swing.JFrame {
 
     private void DbSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DbSelectActionPerformed
         String value=DbSelect.getSelectedItem().toString();
-         ResultSet rs;
-     switch(EnginesEnum.Engines.valueOf(main.engine)) {
-  case MSSQL:
-         rs=main.transactions.GetTableListForDb(value);
-
-    break;
-  case MySQL:
-            rs=main.mysqlTransactions.GetTableListForDb(value);
-
-    break;
-  default:
-    rs=null;
-
-}
+         ResultSet rs = null;
+        if(appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString()))
+        rs=appInit.mssqlTransactions.GetTableListForDb(value);
+        else if(appInit.engine.equals(EnginesEnum.Engines.MySQL.toString()))
+        rs=appInit.mysqlTransactions.GetTableListForDb(value);
         List<String> tables = new ArrayList<String>();
         try {
             while (rs.next()) {
@@ -191,10 +201,10 @@ public class TableSelectFrame extends javax.swing.JFrame {
 
     private void SelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectButtonActionPerformed
         if(tableSelected&&dbSelected&&selectedDb!=""&&selectedTable!=""){            
-            main.tableOverviewFrame=new TableOverviewFrame(selectedDb,selectedTable);
-            main.tableOverviewFrame.setSize(600,600);
-            main.tableOverviewFrame.setVisible(true);
-            main.tableOverviewFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+            appInit.tableOverviewFrame=new TableOverviewFrame(selectedDb,selectedTable);
+            appInit.tableOverviewFrame.setSize(600,600);
+            appInit.tableOverviewFrame.setVisible(true);
+            appInit.tableOverviewFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
             this.setVisible(false);
         }
         else
@@ -202,11 +212,11 @@ public class TableSelectFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_SelectButtonActionPerformed
 
     private void AboutOptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutOptActionPerformed
-        main.aboutFrame = new AboutFrame();
-        main.aboutFrame.setSize(600,500);                
-        main.aboutFrame.setResizable(false);
-        main.aboutFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        main.aboutFrame.setVisible(true);
+        appInit.aboutFrame = new AboutFrame();
+        appInit.aboutFrame.setSize(600,500);                
+        appInit.aboutFrame.setResizable(false);
+        appInit.aboutFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        appInit.aboutFrame.setVisible(true);
     }//GEN-LAST:event_AboutOptActionPerformed
 
     private void tableSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableSelectActionPerformed
@@ -214,7 +224,6 @@ public class TableSelectFrame extends javax.swing.JFrame {
         selectedTable=value;
         if(value!=null)
           tableSelected=true;
-
     }//GEN-LAST:event_tableSelectActionPerformed
 
     /**

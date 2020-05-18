@@ -5,8 +5,8 @@
  */
 package frames;
 
-import classes.DatabaseConnection;
-import static classes.Main.*;
+import classes.MSSQLConnection;
+import static classes.AppInit.*;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.Button;
@@ -195,33 +195,42 @@ public class LoginFrame extends javax.swing.JFrame {
             String pwd = new String(Password.getPassword());
             String selectedEngine=dbEngineSelect.getSelectedItem().toString();
             if(selectedEngine==Engines.MSSQL.toString()){
-            main.databaseConnection.DatabaseUserAuthentication(Login.getText(), pwd, ServerSelection.getSelectedItem().toString(), 3306);
-            this.setVisible(false);
-            main.engine=selectedEngine;
+                if(CustomPort.getText() == null || CustomPort.getText().trim().isEmpty()) {
+                    appInit.mssqlConnection.DatabaseUserAuthentication(Login.getText(), pwd, ServerSelection.getSelectedItem().toString(), 1433);    
+                }
+                else {
+                    appInit.mssqlConnection.DatabaseUserAuthentication(Login.getText(), pwd, ServerSelection.getSelectedItem().toString(), Integer.parseInt(CustomPort.getText()));
+                }
 
-            if(main.databaseConnection.connection.isClosed() != true) {
-              main.tableSelectFrame=new TableSelectFrame();
-              main.tableSelectFrame.setSize(400,400);
-              main.tableSelectFrame.setResizable(false);
-              main.tableSelectFrame.setVisible(true);
-              this.setVisible(false);    
-            }
+                //this.setVisible(false);
+                appInit.engine=selectedEngine;
+
+                if(appInit.mssqlConnection.connection.isClosed() != true) {
+                  appInit.tableSelectFrame=new TableSelectFrame();
+                  appInit.tableSelectFrame.setSize(400,400);
+                  appInit.tableSelectFrame.setResizable(false);
+                  appInit.tableSelectFrame.setVisible(true);
+                  this.setVisible(false);    
+                }
             }
             else if(selectedEngine==Engines.MySQL.toString()){
-                 main.mysqlDbConnection.DatabaseUserAuthentication(Login.getText(), pwd, ServerSelection.getSelectedItem().toString(), 3306,"mysql");
+                if(CustomPort.getText() == null || CustomPort.getText().trim().isEmpty()) {
+                    appInit.mysqlConnection.DatabaseUserAuthentication(Login.getText(), pwd, ServerSelection.getSelectedItem().toString(), 3306, "mysql");
+                }
+                else {
+                    appInit.mysqlConnection.DatabaseUserAuthentication(Login.getText(), pwd, ServerSelection.getSelectedItem().toString(), Integer.parseInt(CustomPort.getText()), "mysql");
+                }
            // this.setVisible(false);
-            main.engine=selectedEngine;
-           //if(main.mysqlDbConnection.connection.isClosed() != true) {
-              main.tableSelectFrame=new TableSelectFrame();
-              main.tableSelectFrame.setSize(400,400);
-              main.tableSelectFrame.setResizable(false);
-              main.tableSelectFrame.setVisible(true);   
-           // }
-            }
+                appInit.engine=selectedEngine;
+                if(appInit.mysqlConnection.connection.isClosed() != true) {
+                   appInit.tableSelectFrame=new TableSelectFrame();
+                   appInit.tableSelectFrame.setSize(400,400);
+                   appInit.tableSelectFrame.setResizable(false);
+                   appInit.tableSelectFrame.setVisible(true);   
+                 }
+                }
             else
-            JOptionPane.showMessageDialog(null, "Wybierz silnik bazodanowy");
-
-            
+                JOptionPane.showMessageDialog(null, "Wybierz silnik bazodanowy"); 
         }
         catch(Exception e) {
             System.out.println("LoginButtonActionPerformed method execution - FAILURE\n" + e);
@@ -231,8 +240,8 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
         try {
-            if(main.databaseConnection.connection.isClosed() == false) {
-                main.databaseConnection.connection.close();
+            if(appInit.mssqlConnection.connection.isClosed() == false) {
+                appInit.mssqlConnection.connection.close();
             }
         }
         catch(Exception e) {

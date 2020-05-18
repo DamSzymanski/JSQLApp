@@ -5,8 +5,8 @@
  */
 package classes;
 
-import classes.DatabaseConnection;
-import static classes.Main.*;
+import classes.MSSQLConnection;
+import static classes.AppInit.*;
 import frames.TableSelectFrame;
 import java.sql.*;
 import java.util.ArrayList;
@@ -32,10 +32,10 @@ public class MySQLTransactions {
     //pobranie listy tabel dla podanej bazy
     public ResultSet GetTableListForDb(String dbName){ 
         try{
-            statusCode = main.mysqlDbConnection.CheckConnectionStatus();
+            statusCode = appInit.mysqlConnection.CheckConnectionStatus();
             if(statusCode == 1) {
-                Statement stmt = main.mysqlDbConnection.connection.createStatement();
-                Statement stmt2 = main.mysqlDbConnection.connection.createStatement();
+                Statement stmt = appInit.mysqlConnection.connection.createStatement();
+                Statement stmt2 = appInit.mysqlConnection.connection.createStatement();
                    ResultSet rs1=stmt.executeQuery("use "+dbName+";");
                 ResultSet res = stmt.executeQuery("show tables");
                 return res;
@@ -53,9 +53,9 @@ public class MySQLTransactions {
        //listowanie baz danych 
     public ResultSet GetDBList(){
         try{
-            statusCode = main.mysqlDbConnection.CheckConnectionStatus();
+            statusCode = appInit.mysqlConnection.CheckConnectionStatus();
             if(statusCode == 1) {
-                Statement stmt = main.mysqlDbConnection.connection.createStatement();
+                Statement stmt = appInit.mysqlConnection.connection.createStatement();
                 ResultSet res = stmt.executeQuery("SHOW DATABASES;");
                 return res;
             }
@@ -72,18 +72,18 @@ public class MySQLTransactions {
     //pobranie wszystkich rekordow dla danej tabeli
         public ResultSet SelectAll(String dbName,String tableName){
         try{
-            statusCode = main.mysqlDbConnection.CheckConnectionStatus();
+            statusCode = appInit.mysqlConnection.CheckConnectionStatus();
             if(statusCode == 1) {
                 try{
-                Statement stmt = main.mysqlDbConnection.connection.createStatement();
+                Statement stmt = appInit.mysqlConnection.connection.createStatement();
                 //konieczne zaznaczenie, którą bazę wykorzystujemuy
-                ResultSet rs1=stmt.executeQuery("use "+dbName+";");
-                ResultSet res = stmt.executeQuery("select * from "+tableName+";");
+                ResultSet res = stmt.executeQuery("use " + dbName + "; select * from " + tableName+ ";");
                 
                 return res;
 
                 }catch (Exception ex){
-                    
+                    System.out.println(ex);
+                    ex.printStackTrace();
                 }
             }
             else {
@@ -101,9 +101,9 @@ public class MySQLTransactions {
       //usuwanie z bazy
         public ResultSet Delete(String dbName,String tableName,String columnName,String conditionValue){
                 try{
-            statusCode = main.mysqlDbConnection.CheckConnectionStatus();
+            statusCode = appInit.mysqlConnection.CheckConnectionStatus();
             if(statusCode == 1) {
-                Statement stmt = main.mysqlDbConnection.connection.createStatement();
+                Statement stmt = appInit.mysqlConnection.connection.createStatement();
                 ResultSet useRes = stmt.executeQuery("use "+dbName+";");
                 ResultSet res = stmt.executeQuery("delete from "+tableName+" where "+columnName+"="+conditionValue);
                 return res;
