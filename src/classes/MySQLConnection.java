@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  *
  * @author Damian
  */
-public class MysqlConnection {
+public class MySQLConnection {
         public Connection connection;
     public void DatabaseUserAuthentication(String username, String password, String server, int port,String dbName) {
         try {
@@ -28,9 +28,8 @@ public class MysqlConnection {
            //nie działa ale skopiownay do managera działa
           // connection = DriverManager.getConnection("jdbc:mysql://"+server+""+String.valueOf(port)+"/"+dbName+"&autoReconnect=true&failOverReadOnly=false&maxReconnects=10",username, password);
           //działa ale not established
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/siemanko?zeroDateTimeBehavior=CONVERT_TO_NULL",username, password);
-
-            System.out.println(connection+"Eee");
+          connection = DriverManager.getConnection("jdbc:mysql://" + server + ":" + port, username, password);
+          System.out.println(connection+"Eee");
         }
         catch(Exception e) {
             System.out.println(e);
@@ -45,7 +44,7 @@ public class MysqlConnection {
                 connection.close();
             }
         } catch (Exception ex) {
-            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MSSQLConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

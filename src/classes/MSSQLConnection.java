@@ -13,10 +13,10 @@ import java.util.logging.Logger;
  *
  * @author jsarnowski
  */
-public class DatabaseConnection {
+public class MSSQLConnection {
     public Connection connection;
     
-    public DatabaseConnection() {
+    public MSSQLConnection() {
         
     }
 
@@ -25,9 +25,9 @@ public class DatabaseConnection {
             
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(
-                "jdbc:sqlserver://" + server+";",
+                "jdbc:sqlserver://" + server + ":" + port + ";",
                 username, password
-            );                
+            );         
             System.out.println(connection);
         }
         catch(Exception e) {
@@ -44,7 +44,7 @@ public class DatabaseConnection {
                 connection.close();
             }
         } catch (Exception ex) {
-            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MSSQLConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

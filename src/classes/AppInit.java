@@ -23,12 +23,12 @@ import javafx.stage.Stage;
  *
  * @author jsarnowski
  */
-public class Main extends Application {
+public class AppInit extends Application {
     
-    public static Main main;
+    public static AppInit appInit;
     
-    public Main() {
-        main = this;
+    public AppInit() {
+        appInit = this;
     }
     
     @Override
@@ -37,10 +37,10 @@ public class Main extends Application {
         loginFrame.setSize(600,500);
         loginFrame.setVisible(true);
         
-        databaseConnection = new DatabaseConnection();
-        mysqlDbConnection=new MysqlConnection();
-        transactions = new Transactions();
-        mysqlTransactions=new MySQLTransactions();
+        mssqlConnection = new MSSQLConnection();
+        mysqlConnection = new MySQLConnection();
+        mssqlTransactions = new MSSQLTransactions();
+        mysqlTransactions = new MySQLTransactions();
     }
 
     /**
@@ -50,21 +50,20 @@ public class Main extends Application {
         launch(args);
     }
     
-    public DatabaseConnection getDatabaseConnection() {
-        return databaseConnection;
+    public MSSQLConnection getDatabaseConnection() {
+        return mssqlConnection;
     }
         
-    public MysqlConnection getMysqlDatabaseConnection() {
-        return mysqlDbConnection;
+    public MySQLConnection getMysqlDatabaseConnection() {
+        return mysqlConnection;
     }
     public LoginFrame loginFrame;
     public TableOverviewFrame tableOverviewFrame;
     public AboutFrame aboutFrame;
     public TableSelectFrame tableSelectFrame;
-    public DatabaseConnection databaseConnection;
-    public Transactions transactions;
-    //mysql
+    public MSSQLConnection mssqlConnection;
+    public MSSQLTransactions mssqlTransactions;
     public String engine;
-    public MysqlConnection mysqlDbConnection;
+    public MySQLConnection mysqlConnection;
     public MySQLTransactions mysqlTransactions;
 }
