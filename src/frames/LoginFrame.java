@@ -7,6 +7,8 @@ package frames;
 
 import classes.MSSQLConnection;
 import static classes.AppInit.*;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.Button;
@@ -27,6 +29,7 @@ public class LoginFrame extends javax.swing.JFrame {
     public LoginFrame() {       
         initComponents();
         dbEngineSelect.setModel(new DefaultComboBoxModel(Engines.values()));
+        this.errMsg.setVisible(false);
     }
 
     /**
@@ -42,7 +45,7 @@ public class LoginFrame extends javax.swing.JFrame {
         LoginLabel = new javax.swing.JLabel();
         PasswordLabel = new javax.swing.JLabel();
         ServerSelectionLabel = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        CustomPortLabel = new javax.swing.JLabel();
         Login = new javax.swing.JTextField();
         Password = new javax.swing.JPasswordField();
         ServerSelection = new javax.swing.JComboBox<>();
@@ -53,6 +56,7 @@ public class LoginFrame extends javax.swing.JFrame {
         ExitButton = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         dbEngineSelect = new javax.swing.JComboBox<>();
+        errMsg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Universal Database Manager");
@@ -71,7 +75,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
         ServerSelectionLabel.setText("Server name/IP address");
 
-        jLabel4.setText("Custom port");
+        CustomPortLabel.setText("Custom port");
 
         ServerSelection.setEditable(true);
         ServerSelection.setToolTipText("");
@@ -99,39 +103,47 @@ public class LoginFrame extends javax.swing.JFrame {
             }
         });
 
+        errMsg.setForeground(new java.awt.Color(255, 0, 0));
+        errMsg.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout LoginPanelLayout = new javax.swing.GroupLayout(LoginPanel);
         LoginPanel.setLayout(LoginPanelLayout);
         LoginPanelLayout.setHorizontalGroup(
             LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginPanelLayout.createSequentialGroup()
-                .addContainerGap(243, Short.MAX_VALUE)
-                .addComponent(LoginButton)
-                .addGap(18, 18, 18)
-                .addComponent(ExitButton)
-                .addGap(229, 229, 229))
             .addGroup(LoginPanelLayout.createSequentialGroup()
                 .addGap(136, 136, 136)
                 .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(LoginPanelLayout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(RememberLogin))
                     .addGroup(LoginPanelLayout.createSequentialGroup()
                         .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(ServerSelectionLabel)
                             .addComponent(LoginLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(PasswordLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(CustomPortLabel, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(34, 34, 34)
-                        .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(dbEngineSelect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(Password, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(CustomPort, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(Login, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(ServerSelection, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dbEngineSelect, 0, 207, Short.MAX_VALUE)
+                            .addComponent(Password)
+                            .addComponent(Login)
+                            .addGroup(LoginPanelLayout.createSequentialGroup()
+                                .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(CustomPort, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ServerSelection, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(105, 105, 105))
+                    .addGroup(LoginPanelLayout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(errMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(RememberLogin))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(LoginButton)
+                .addGap(18, 18, 18)
+                .addComponent(ExitButton)
+                .addGap(229, 229, 229))
         );
         LoginPanelLayout.setVerticalGroup(
             LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,17 +166,19 @@ public class LoginFrame extends javax.swing.JFrame {
                     .addComponent(ServerSelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
+                    .addComponent(CustomPortLabel)
                     .addComponent(CustomPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13)
                 .addComponent(RememberLogin)
-                .addGap(17, 17, 17)
+                .addGap(8, 8, 8)
+                .addComponent(errMsg, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(LoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LoginButton)
                     .addComponent(ExitButton))
-                .addContainerGap(186, Short.MAX_VALUE))
+                .addContainerGap(154, Short.MAX_VALUE))
         );
 
         LoginLabel.getAccessibleContext().setAccessibleDescription("");
@@ -191,6 +205,9 @@ public class LoginFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
+        if(this.errMsg.getText() != "") {
+            this.errMsg.setText("");
+        }
         try {
             String pwd = new String(Password.getPassword());
             String selectedEngine=dbEngineSelect.getSelectedItem().toString();
@@ -233,9 +250,8 @@ public class LoginFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Wybierz silnik bazodanowy"); 
         }
         catch(Exception e) {
-            System.out.println("LoginButtonActionPerformed method execution - FAILURE\n" + e);
+            this.errMsg.setText(e.toString());
         }
-
     }//GEN-LAST:event_LoginButtonActionPerformed
 
     private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
@@ -291,6 +307,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CustomPort;
+    private javax.swing.JLabel CustomPortLabel;
     private javax.swing.JButton ExitButton;
     private javax.swing.JTextField Login;
     private javax.swing.JButton LoginButton;
@@ -302,7 +319,7 @@ public class LoginFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> ServerSelection;
     private javax.swing.JLabel ServerSelectionLabel;
     private javax.swing.JComboBox<String> dbEngineSelect;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel errMsg;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
