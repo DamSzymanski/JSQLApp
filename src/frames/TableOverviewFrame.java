@@ -9,6 +9,7 @@ package frames;
 import classes.MSSQLTransactions;
 import static classes.AppInit.*;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -18,8 +19,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Button;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListModel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
@@ -37,6 +41,8 @@ public class TableOverviewFrame extends javax.swing.JFrame {
     
     private List<Button> EditButtons;
     private List<Button> DeleteButtons;
+    private List<String> keys;
+    private List<String> values;
     
     /**
      * Creates new form TableOverviewFrame
@@ -110,6 +116,14 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         TableListScrollPane = new javax.swing.JScrollPane();
         dataOverviewTable = new javax.swing.JTable();
         RecordDetailsPane = new javax.swing.JPanel();
+        DatabaseLabel = new javax.swing.JLabel();
+        TableLabel = new javax.swing.JLabel();
+        DatabaseName = new javax.swing.JLabel();
+        TableName = new javax.swing.JLabel();
+        CreatedByLabel = new javax.swing.JLabel();
+        CreatedBy = new javax.swing.JLabel();
+        CreateDateLabel = new javax.swing.JLabel();
+        CreateDate = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         LogoutMenuButton = new javax.swing.JMenuItem();
@@ -140,6 +154,11 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         ));
         dataOverviewTable.setCellSelectionEnabled(true);
         dataOverviewTable.getTableHeader().setReorderingAllowed(false);
+        dataOverviewTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dataOverviewTableMouseClicked(evt);
+            }
+        });
         TableListScrollPane.setViewportView(dataOverviewTable);
 
         javax.swing.GroupLayout TableListPaneLayout = new javax.swing.GroupLayout(TableListPane);
@@ -158,15 +177,68 @@ public class TableOverviewFrame extends javax.swing.JFrame {
 
         RecordDetailsPane.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        DatabaseLabel.setText("Database:");
+
+        TableLabel.setText("Table:");
+
+        DatabaseName.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+
+        TableName.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+
+        CreatedByLabel.setText("Created by:");
+
+        CreatedBy.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        CreatedBy.setText("-");
+
+        CreateDateLabel.setText("Date of creation:");
+
+        CreateDate.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        CreateDate.setText("-");
+
         javax.swing.GroupLayout RecordDetailsPaneLayout = new javax.swing.GroupLayout(RecordDetailsPane);
         RecordDetailsPane.setLayout(RecordDetailsPaneLayout);
         RecordDetailsPaneLayout.setHorizontalGroup(
             RecordDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(RecordDetailsPaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(RecordDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(DatabaseLabel)
+                    .addComponent(TableLabel))
+                .addGap(18, 18, 18)
+                .addGroup(RecordDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(DatabaseName)
+                    .addComponent(TableName))
+                .addGap(39, 39, 39)
+                .addComponent(CreatedByLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(CreatedBy)
+                .addGap(51, 51, 51)
+                .addComponent(CreateDateLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(CreateDate)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         RecordDetailsPaneLayout.setVerticalGroup(
             RecordDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 323, Short.MAX_VALUE)
+            .addGroup(RecordDetailsPaneLayout.createSequentialGroup()
+                .addGroup(RecordDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(RecordDetailsPaneLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(RecordDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(DatabaseLabel)
+                            .addComponent(DatabaseName))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(RecordDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TableLabel)
+                            .addComponent(TableName)))
+                    .addGroup(RecordDetailsPaneLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(RecordDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(CreatedByLabel)
+                            .addComponent(CreatedBy)
+                            .addComponent(CreateDateLabel)
+                            .addComponent(CreateDate))))
+                .addContainerGap(278, Short.MAX_VALUE))
         );
 
         jMenu1.setText("File");
@@ -263,6 +335,49 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         appInit.tableSelectFrame.setVisible(true);
     }//GEN-LAST:event_SwitchTableMenuButtonActionPerformed
 
+    private void dataOverviewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataOverviewTableMouseClicked
+        appInit.tableOverviewFrame.dataOverviewTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = dataOverviewTable.rowAtPoint(evt.getPoint());
+                int col = dataOverviewTable.columnAtPoint(evt.getPoint());
+
+                keys = new ArrayList<>();
+                values = new ArrayList<>();
+                
+                if (row >= 0 && col >= 0) {
+                    DatabaseName.setText(currentDb);
+                    TableName.setText(currentTable);
+                    int columnCount = appInit.tableOverviewFrame.dataOverviewTable.getColumnCount();
+                    for(int c = 0; c < columnCount - 1; c++) {
+                        keys.add((String)appInit.tableOverviewFrame.dataOverviewTable.getColumnName(c));
+                        values.add((String)appInit.tableOverviewFrame.dataOverviewTable.getValueAt(row, c));
+                    }
+                    
+                    for(int k = 0; k < keys.size(); k++) {
+                        appInit.tableOverviewFrame.add(new JLabel(keys.get(k)));
+                    }
+                    for(int v = 0; v < values.size(); v++) {
+                        appInit.tableOverviewFrame.add(new JTextField(values.get(v)));
+                    }
+                    appInit.tableOverviewFrame.revalidate();
+                    appInit.tableOverviewFrame.repaint();
+                    SwingUtilities.updateComponentTreeUI(appInit.tableOverviewFrame);
+                    
+                    //DEBUG
+                    System.out.println("KEYS");
+                    for(int i = 0; i < keys.size(); i++) {
+                        System.out.println(keys.get(i));
+                    }
+                    System.out.println("VALUES");
+                    for(int j = 0; j < values.size(); j++) {
+                        System.out.println(values.get(j));
+                    }
+                }
+            }
+        });
+    }//GEN-LAST:event_dataOverviewTableMouseClicked
+    
     private void EditButtonActionPerformed(java.awt.event.ActionEvent evt) {
         
     }
@@ -299,16 +414,25 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        
     }
 
                
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel CreateDate;
+    private javax.swing.JLabel CreateDateLabel;
+    private javax.swing.JLabel CreatedBy;
+    private javax.swing.JLabel CreatedByLabel;
+    private javax.swing.JLabel DatabaseLabel;
+    private javax.swing.JLabel DatabaseName;
     private javax.swing.JMenuItem ExitMenuButton;
     private javax.swing.JMenuItem LogoutMenuButton;
     private javax.swing.JPanel RecordDetailsPane;
     private javax.swing.JMenuItem SwitchTableMenuButton;
+    private javax.swing.JLabel TableLabel;
     private javax.swing.JPanel TableListPane;
     private javax.swing.JScrollPane TableListScrollPane;
+    private javax.swing.JLabel TableName;
     private javax.swing.JTable dataOverviewTable;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JMenu jMenu1;
