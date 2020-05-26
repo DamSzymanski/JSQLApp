@@ -36,6 +36,7 @@ public class TableSelectFrame extends javax.swing.JFrame {
     
     private String selectedDb="";
     private String selectedTable="";
+    private String value="";
     /**
      * Creates new form ActionSelectFrame
      */
@@ -56,7 +57,7 @@ public class TableSelectFrame extends javax.swing.JFrame {
         }
         DbSelect.setModel(new DefaultComboBoxModel(databases.toArray()));
         
-        String value=DbSelect.getSelectedItem().toString();
+        value=DbSelect.getSelectedItem().toString();
         ResultSet tableResult = null;
         if(appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString()))
         tableResult=appInit.mssqlTransactions.GetTableListForDb(value);
@@ -179,8 +180,8 @@ public class TableSelectFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_LogoutOptActionPerformed
 
     private void DbSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DbSelectActionPerformed
-        String value=DbSelect.getSelectedItem().toString();
-         ResultSet rs = null;
+        value=DbSelect.getSelectedItem().toString();
+        ResultSet rs = null;
         if(appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString()))
         rs=appInit.mssqlTransactions.GetTableListForDb(value);
         else if(appInit.engine.equals(EnginesEnum.Engines.MySQL.toString()))
@@ -220,7 +221,7 @@ public class TableSelectFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_AboutOptActionPerformed
 
     private void tableSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableSelectActionPerformed
-        String value=tableSelect.getSelectedItem().toString();
+        value=tableSelect.getSelectedItem().toString();
         selectedTable=value;
         if(value!=null)
           tableSelected=true;
