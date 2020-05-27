@@ -5,11 +5,12 @@
  */
 package frames;
 
-
 import classes.MSSQLTransactions;
 import static classes.AppInit.*;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -18,16 +19,23 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Button;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import models.EnginesEnum;
+
+import javax.swing.table.TableCellRenderer;
+
 /**
  *
  * @author jsarnowski
@@ -38,70 +46,75 @@ public class TableOverviewFrame extends javax.swing.JFrame {
     private String currentTable;
     private ResultSet res;
     private DefaultTableModel tableData;
-    
+
     private List<Button> EditButtons;
     private List<Button> DeleteButtons;
     private List<String> keys;
     private List<String> values;
-    
+
     /**
      * Creates new form TableOverviewFrame
      */
     public TableOverviewFrame(String dbName, String tableName) {
         initComponents();
-        this.currentDb=dbName;
-        this.currentTable=tableName;
+        this.currentDb = dbName;
+        this.currentTable = tableName;
         setLocationRelativeTo(null);
         this.setTitle("Universal Database Manager");
-        
+
         EditButtons = new ArrayList<Button>();
         DeleteButtons = new ArrayList<Button>();
-        
-        if(appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
+
+        if (appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
             res = appInit.mssqlTransactions.SelectAll(dbName, tableName);
-        }
-        else if(appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
+        } else if (appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
             res = appInit.mysqlTransactions.SelectAll(dbName, tableName);
         }
         try {
-                tableData=new DefaultTableModel();
+            tableData = new DefaultTableModel();
 
-                //liczenie kolumn
-                ResultSetMetaData md=res.getMetaData();
-                int columnCount=md.getColumnCount();
-                
-                //nagłówki kolumn
-                List<Object> tableHeaders = new ArrayList<Object>();
-                     for(int i=1;i<=columnCount;i++){
-                         tableHeaders.add(md.getColumnName(i));
-                        }
-                        columnCount++;
-                        tableHeaders.add("Actions");
+            //liczenie kolumn
+            ResultSetMetaData md = res.getMetaData();
+            int columnCount = md.getColumnCount();
 
-                //test data
-                Object[][] data = new Object[][] {};
-                
-                
-                  List<Object[]> table = new ArrayList<>();
-                    while( res.next()) {
-                        Object[] row = new Object[columnCount];
-                        for( int iCol = 1; iCol < columnCount; iCol++ ){
-                            Object obj = res.getObject( iCol );
-                            row[iCol-1] = (obj == null) ?null:obj.toString();
-                            System.out.println(obj.toString());
-                        }
-                        table.add( row );
-                    }
-                
-               data = new Object[columnCount][];
-               table.toArray(data);
-               dataOverviewTable.setModel(new DefaultTableModel(table.toArray(data),tableHeaders.toArray()));
-            } 
-            catch (SQLException ex) {
-                Logger.getLogger(TableSelectFrame.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(ex.toString());
-            }              
+            //nagłówki kolumn
+            List<Object> tableHeaders = new ArrayList<Object>();
+            for (int i = 1; i <= columnCount; i++) {
+                tableHeaders.add(md.getColumnName(i));
+            }
+            columnCount++;
+            //test data
+            Object[][] data = new Object[][]{};
+
+            List<Object[]> table = new ArrayList<>();
+            while (res.next()) {
+                Object[] row = new Object[columnCount];
+                for (int iCol = 1; iCol < columnCount; iCol++) {
+                    Object obj = res.getObject(iCol);
+
+                    row[iCol - 1] = (obj == null) ? null : obj.toString();
+
+                    //System.out.println(obj.toString());
+                }
+                table.add(row);
+            }
+
+            data = new Object[columnCount][];
+            table.toArray(data);
+            dataOverviewTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            dataOverviewTable.setModel(new DefaultTableModel(table.toArray(data), tableHeaders.toArray()) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            });
+
+        } catch (SQLException ex) {
+            Logger.getLogger(TableSelectFrame.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
+        }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -115,6 +128,9 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         TableListPane = new javax.swing.JPanel();
         TableListScrollPane = new javax.swing.JScrollPane();
         dataOverviewTable = new javax.swing.JTable();
+        deletebutton = new javax.swing.JButton();
+        updateButton = new javax.swing.JButton();
+        insertbutton = new javax.swing.JButton();
         RecordDetailsPane = new javax.swing.JPanel();
         DatabaseLabel = new javax.swing.JLabel();
         TableLabel = new javax.swing.JLabel();
@@ -161,15 +177,50 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         });
         TableListScrollPane.setViewportView(dataOverviewTable);
 
+        deletebutton.setText("Delete selected row");
+        deletebutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deletebuttonActionPerformed(evt);
+            }
+        });
+
+        updateButton.setText("Update selected row");
+        updateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateButtonActionPerformed(evt);
+            }
+        });
+
+        insertbutton.setText("Add new row");
+        insertbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                insertbuttonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout TableListPaneLayout = new javax.swing.GroupLayout(TableListPane);
         TableListPane.setLayout(TableListPaneLayout);
         TableListPaneLayout.setHorizontalGroup(
             TableListPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TableListPaneLayout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(updateButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(deletebutton, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(insertbutton)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(TableListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 774, Short.MAX_VALUE)
         );
         TableListPaneLayout.setVerticalGroup(
             TableListPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(TableListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+            .addGroup(TableListPaneLayout.createSequentialGroup()
+                .addComponent(TableListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(TableListPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(deletebutton)
+                    .addComponent(updateButton)
+                    .addComponent(insertbutton)))
         );
 
         TableListScrollPane.getAccessibleContext().setAccessibleName("TableListScrollPane");
@@ -238,7 +289,7 @@ public class TableOverviewFrame extends javax.swing.JFrame {
                             .addComponent(CreatedBy)
                             .addComponent(CreateDateLabel)
                             .addComponent(CreateDate))))
-                .addContainerGap(278, Short.MAX_VALUE))
+                .addContainerGap(249, Short.MAX_VALUE))
         );
 
         jMenu1.setText("File");
@@ -295,16 +346,15 @@ public class TableOverviewFrame extends javax.swing.JFrame {
 
     private void ExitMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitMenuButtonActionPerformed
         try {
-            if(appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
-                if(appInit.mssqlConnection.connection.isClosed() != true) {
+            if (appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
+                if (appInit.mssqlConnection.connection.isClosed() != true) {
                     appInit.mssqlConnection.connection.close();
                 }
-            }
-            else if(appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
-                if(appInit.mysqlConnection.connection.isClosed() != true) {
+            } else if (appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
+                if (appInit.mysqlConnection.connection.isClosed() != true) {
                     appInit.mysqlConnection.connection.close();
                 }
-            }   
+            }
         } catch (SQLException ex) {
             Logger.getLogger(TableOverviewFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -313,16 +363,15 @@ public class TableOverviewFrame extends javax.swing.JFrame {
 
     private void LogoutMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutMenuButtonActionPerformed
         try {
-            if(appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
-                if(appInit.mssqlConnection.connection.isClosed() != true) {
+            if (appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
+                if (appInit.mssqlConnection.connection.isClosed() != true) {
                     appInit.mssqlConnection.connection.close();
                 }
-            }
-            else if(appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
-                if(appInit.mysqlConnection.connection.isClosed() != true) {
+            } else if (appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
+                if (appInit.mysqlConnection.connection.isClosed() != true) {
                     appInit.mysqlConnection.connection.close();
                 }
-            }  
+            }
             this.setVisible(false);
             appInit.loginFrame.setVisible(true);
         } catch (SQLException ex) {
@@ -344,48 +393,223 @@ public class TableOverviewFrame extends javax.swing.JFrame {
 
                 keys = new ArrayList<>();
                 values = new ArrayList<>();
-                
+
                 if (row >= 0 && col >= 0) {
                     DatabaseName.setText(currentDb);
                     TableName.setText(currentTable);
                     int columnCount = appInit.tableOverviewFrame.dataOverviewTable.getColumnCount();
-                    for(int c = 0; c < columnCount - 1; c++) {
-                        keys.add((String)appInit.tableOverviewFrame.dataOverviewTable.getColumnName(c));
-                        values.add((String)appInit.tableOverviewFrame.dataOverviewTable.getValueAt(row, c));
+                    for (int c = 0; c < columnCount - 1; c++) {
+                        keys.add((String) appInit.tableOverviewFrame.dataOverviewTable.getColumnName(c));
+                        values.add((String) appInit.tableOverviewFrame.dataOverviewTable.getValueAt(row, c));
                     }
-                    
-                    for(int k = 0; k < keys.size(); k++) {
+
+                    for (int k = 0; k < keys.size(); k++) {
                         appInit.tableOverviewFrame.add(new JLabel(keys.get(k)));
                     }
-                    for(int v = 0; v < values.size(); v++) {
+                    for (int v = 0; v < values.size(); v++) {
                         appInit.tableOverviewFrame.add(new JTextField(values.get(v)));
                     }
                     appInit.tableOverviewFrame.revalidate();
                     appInit.tableOverviewFrame.repaint();
                     SwingUtilities.updateComponentTreeUI(appInit.tableOverviewFrame);
-                    
+
                     //DEBUG
                     System.out.println("KEYS");
-                    for(int i = 0; i < keys.size(); i++) {
+                    for (int i = 0; i < keys.size(); i++) {
                         System.out.println(keys.get(i));
                     }
                     System.out.println("VALUES");
-                    for(int j = 0; j < values.size(); j++) {
+                    for (int j = 0; j < values.size(); j++) {
                         System.out.println(values.get(j));
                     }
                 }
             }
         });
     }//GEN-LAST:event_dataOverviewTableMouseClicked
-    
-    private void EditButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        
+
+    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
+
+        JTextField textfield1;
+        JLabel label;
+        JButton saveBtn;
+        int row = dataOverviewTable.getSelectedRow();
+        if (row >= 0) {
+            DefaultTableModel model = (DefaultTableModel) dataOverviewTable.getModel();
+
+            appInit.insertorUpdateFrame = new InsertUpdateFrame();
+            appInit.insertorUpdateFrame.setSize(600, 600);
+            appInit.insertorUpdateFrame.setTitle("Data Edition");
+            appInit.insertorUpdateFrame.getContentPane().setLayout(new FlowLayout());
+            int columnCount = appInit.tableOverviewFrame.dataOverviewTable.getColumnCount();
+            for (int iCol = 1; iCol <= columnCount; iCol++) {
+
+                String headerValue = dataOverviewTable.getColumnName(iCol - 1);
+                String value = (model.getValueAt(row, iCol - 1) == null) ? null : model.getValueAt(row, iCol - 1).toString();
+
+                textfield1 = new JTextField(value, 10);
+                label = new JLabel(headerValue);
+                appInit.insertorUpdateFrame.getContentPane().add(label);
+
+                appInit.insertorUpdateFrame.getContentPane().add(textfield1);
+
+            }
+            saveBtn = new JButton("Save");
+            saveBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int res = 0;
+                    int header = dataOverviewTable.getSelectedColumn();
+                    String headerValue = dataOverviewTable.getColumnName(header);
+                    String value = dataOverviewTable.getModel().getValueAt(row, dataOverviewTable.getSelectedColumn()).toString();
+                    //podjęcie działania w zależności od serwera bazodanowego
+                    try {
+                        String updateString = "";
+
+                        //updateString build
+                        for (int iCol = 2; iCol <= columnCount; iCol++) {
+                            String columnValue = (dataOverviewTable.getValueAt(row, iCol - 1) == null) ? null : dataOverviewTable.getValueAt(row, iCol - 1).toString();
+                            String valueQueryString = testParse(columnValue);
+                            if (iCol == columnCount) {
+                                updateString += dataOverviewTable.getColumnName(iCol - 1) + "=" + valueQueryString+" ";
+                            } else {
+                                updateString += dataOverviewTable.getColumnName(iCol - 1) + "=" + valueQueryString + ", ";
+                            }
+
+                        }
+                        if (appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
+                            if (appInit.mssqlConnection.connection.isClosed() != true) {
+
+                                res = appInit.mssqlTransactions.Update(updateString, currentTable, headerValue, value);
+                            }
+                        } else if (appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
+                            if (appInit.mysqlConnection.connection.isClosed() != true) {
+                                res = appInit.mssqlTransactions.Update(updateString, currentTable, headerValue, value);
+                            }
+
+                        }
+                        //zwrotka w zależności od resulta
+                        if (res == 1) {
+                            JOptionPane.showMessageDialog(rootPane, "Update successfull");
+
+                        } else {
+                            JOptionPane.showMessageDialog(rootPane, "Error during record update");
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(TableOverviewFrame.class.getName()).log(Level.SEVERE, null, ex);
+
+                    }
+                }
+            });
+            appInit.insertorUpdateFrame.getContentPane().add(saveBtn);
+
+            appInit.insertorUpdateFrame.pack();
+            appInit.insertorUpdateFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+            appInit.insertorUpdateFrame.setVisible(true);
+
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Row not selected");
+        }
+
+    }//GEN-LAST:event_updateButtonActionPerformed
+    private String testParse(String value) {
+        try {
+            Integer.parseInt(value);
+            return value;
+
+        } catch (NumberFormatException e) {
+            if (value == null) {
+                return null;
+            } else {
+                value = "'" + value + "'";
+                return value;
+            }
+        }
     }
-    
-    private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        
-    }
-    
+    private void deletebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletebuttonActionPerformed
+
+        int row = dataOverviewTable.getSelectedRow();
+        if (row >= 0) {
+            DefaultTableModel model = (DefaultTableModel) dataOverviewTable.getModel();
+            int header = dataOverviewTable.getSelectedColumn();
+            String headerValue = dataOverviewTable.getColumnName(header);
+            String value = dataOverviewTable.getModel().getValueAt(row, dataOverviewTable.getSelectedColumn()).toString();
+            try {
+                if (appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
+                    if (appInit.mssqlConnection.connection.isClosed() != true) {
+                        int res = appInit.mssqlTransactions.Delete(this.currentDb, this.currentTable, headerValue, value);
+                        if (res == 1) {
+                            model.removeRow(row);
+                            JOptionPane.showMessageDialog(rootPane, "Successfully delete");
+
+                        } else {
+                            JOptionPane.showMessageDialog(rootPane, "Delete error");
+                        }
+
+                    }
+                } else if (appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
+                    if (appInit.mysqlConnection.connection.isClosed() != true) {
+                        int res = appInit.mysqlTransactions.Delete(this.currentDb, this.currentTable, headerValue, value);
+                        System.out.println(res);
+                        if (res == 1) {
+                            model.removeRow(row);
+                            JOptionPane.showMessageDialog(rootPane, "Successfully delete");
+
+                        } else {
+                            JOptionPane.showMessageDialog(rootPane, "Delete error");
+                        }
+
+                    }
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(TableOverviewFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Row not selected");
+        }
+
+    }//GEN-LAST:event_deletebuttonActionPerformed
+
+    private void insertbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertbuttonActionPerformed
+        // TODO add your handling code here:
+        JTextField textfield1;
+        JLabel label;
+        JButton saveBtn;
+        int row = dataOverviewTable.getSelectedRow();
+        if (row >= 0) {
+            DefaultTableModel model = (DefaultTableModel) dataOverviewTable.getModel();
+
+            appInit.insertorUpdateFrame = new InsertUpdateFrame();
+            appInit.insertorUpdateFrame.setSize(600, 600);
+            appInit.insertorUpdateFrame.setTitle("Add new entry");
+            appInit.insertorUpdateFrame.getContentPane().setLayout(new FlowLayout());
+            int columnCount = appInit.tableOverviewFrame.dataOverviewTable.getColumnCount();
+            for (int iCol = 1; iCol <= columnCount; iCol++) {
+
+                String headerValue = dataOverviewTable.getColumnName(iCol - 1);
+
+                textfield1 = new JTextField("", 10);
+                label = new JLabel(headerValue);
+                appInit.insertorUpdateFrame.getContentPane().add(label);
+
+                appInit.insertorUpdateFrame.getContentPane().add(textfield1);
+
+            }
+            saveBtn = new JButton("Save");
+            saveBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("eloszka");
+                }
+            });
+            appInit.insertorUpdateFrame.getContentPane().add(saveBtn);
+
+            appInit.insertorUpdateFrame.pack();
+            appInit.insertorUpdateFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+            appInit.insertorUpdateFrame.setVisible(true);
+        }
+    }//GEN-LAST:event_insertbuttonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -414,10 +638,9 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        
     }
 
-               
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CreateDate;
     private javax.swing.JLabel CreateDateLabel;
@@ -434,12 +657,13 @@ public class TableOverviewFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane TableListScrollPane;
     private javax.swing.JLabel TableName;
     private javax.swing.JTable dataOverviewTable;
+    private javax.swing.JButton deletebutton;
     private javax.swing.Box.Filler filler1;
+    private javax.swing.JButton insertbutton;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
-    private Button EditButton;
-    private Button DeleteButton;
+
 }
