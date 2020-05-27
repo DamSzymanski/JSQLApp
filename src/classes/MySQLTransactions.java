@@ -25,99 +25,139 @@ import models.DbInfo;
  */
 public class MySQLTransactions {
 
-    
     public MySQLTransactions() {
 
     }
+
     //pobranie listy tabel dla podanej bazy
-    public ResultSet GetTableListForDb(String dbName){ 
-        try{
+    public ResultSet GetTableListForDb(String dbName) {
+        try {
             statusCode = appInit.mysqlConnection.CheckConnectionStatus();
-            if(statusCode == 1) {
+            if (statusCode == 1) {
                 Statement stmt = appInit.mysqlConnection.connection.createStatement();
                 Statement stmt2 = appInit.mysqlConnection.connection.createStatement();
-                   ResultSet rs1=stmt.executeQuery("use "+dbName+";");
+                ResultSet rs1 = stmt.executeQuery("use " + dbName + ";");
                 ResultSet res = stmt.executeQuery("show tables");
                 return res;
-            }
-            else {
+            } else {
                 System.out.println("Connection not established - return code " + statusCode);
             }
-        }
-        catch(Exception ex){
-         System.out.println("Connection exception  " + ex.toString());
-         ex.printStackTrace();
+        } catch (Exception ex) {
+            System.out.println("Connection exception  " + ex.toString());
+            ex.printStackTrace();
         }
         return null;
     }
-       //listowanie baz danych 
-    public ResultSet GetDBList(){
-        try{
+    //listowanie baz danych 
+
+    public ResultSet GetDBList() {
+        try {
             statusCode = appInit.mysqlConnection.CheckConnectionStatus();
-            if(statusCode == 1) {
+            if (statusCode == 1) {
                 Statement stmt = appInit.mysqlConnection.connection.createStatement();
                 ResultSet res = stmt.executeQuery("SHOW DATABASES;");
                 return res;
-            }
-            else {
+            } else {
                 System.out.println("Connection not established - return code " + statusCode);
             }
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             System.out.println("Connection exception  " + ex.toString());
             ex.printStackTrace();
         }
         return null;
     }
-    //pobranie wszystkich rekordow dla danej tabeli
-        public ResultSet SelectAll(String dbName,String tableName){
-        try{
-            statusCode = appInit.mysqlConnection.CheckConnectionStatus();
-            if(statusCode == 1) {
-                try{
-                Statement stmt = appInit.mysqlConnection.connection.createStatement();
-                //konieczne zaznaczenie, którą bazę wykorzystujemuy
-                ResultSet dbSelection = stmt.executeQuery("use " + dbName + ";");
-                ResultSet res = stmt.executeQuery("select * from " + tableName+ ";");
-                
-                return res;
 
-                }catch (Exception ex){
+    //pobranie wszystkich rekordow dla danej tabeli
+    public ResultSet SelectAll(String dbName, String tableName) {
+        try {
+            statusCode = appInit.mysqlConnection.CheckConnectionStatus();
+            if (statusCode == 1) {
+                try {
+                    Statement stmt = appInit.mysqlConnection.connection.createStatement();
+                    //konieczne zaznaczenie, którą bazę wykorzystujemuy
+                    ResultSet dbSelection = stmt.executeQuery("use " + dbName + ";");
+                    ResultSet res = stmt.executeQuery("select * from " + tableName + ";");
+
+                    return res;
+
+                } catch (Exception ex) {
                     System.out.println(ex);
                     ex.printStackTrace();
                 }
-            }
-            else {
+            } else {
                 System.out.println("Connection not established - return code " + statusCode);
             }
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             System.out.println("Connection exception  " + ex.toString());
             ex.printStackTrace();
         }
         return null;
-    } 
-        
-        
-      //usuwanie z bazy
-        public ResultSet Delete(String dbName,String tableName,String columnName,String conditionValue){
-                try{
+    }
+
+    //usuwanie z bazy
+    public int Delete(String dbName, String tableName, String columnName, String conditionValue) {
+        try {
             statusCode = appInit.mysqlConnection.CheckConnectionStatus();
-            if(statusCode == 1) {
+            if (statusCode == 1) {
                 Statement stmt = appInit.mysqlConnection.connection.createStatement();
                 ResultSet dbSelection = stmt.executeQuery("use " + dbName + ";");
-                ResultSet res = stmt.executeQuery("delete from "+tableName+" where "+columnName+"="+conditionValue);
+                int res = stmt.executeUpdate("delete from " + tableName + " where " + columnName + "=" + conditionValue);
                 return res;
-            }
-            else {
+            } else {
                 System.out.println("Connection not established - return code " + statusCode);
             }
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             System.out.println("Connection exception  " + ex.toString());
             ex.printStackTrace();
         }
-        return null;
+        return 0;
+    }
+
+    //update
+  public int Update(String updateString, String tableName, String columnName, String conditionValue) {
+        try {
+            statusCode = appInit.mysqlConnection.CheckConnectionStatus();
+            if (statusCode == 1) {
+                Statement stmt = appInit.mysqlConnection.connection.createStatement();
+                String cellKindString = "";
+                try {
+                    Integer.parseInt(conditionValue);
+                    cellKindString = "=" + conditionValue;
+                } catch (NumberFormatException e) {
+                    cellKindString = "='" + conditionValue + "'";
+                }
+
+                System.out.println("update " + tableName + " set " + updateString + "where " + columnName + cellKindString);
+
+                int res = stmt.executeUpdate("update " + tableName + " set " + updateString + "where " + columnName + cellKindString);
+                return res;
+            } else {
+                System.out.println("Connection not established - return code " + statusCode);
+            }
+        } catch (Exception ex) {
+            System.out.println("Connection exception  " + ex.toString());
+            ex.printStackTrace();
         }
+        return 0;
+    }
+
+    //insert
+    public int Insert(String dbName, String tableName, String columnName, String conditionValue) {
+        try {
+            statusCode = appInit.mssqlConnection.CheckConnectionStatus();
+            if (statusCode == 1) {
+                Statement stmt = appInit.mssqlConnection.connection.createStatement();
+                int res = stmt.executeUpdate("update " + tableName + " set " + columnName + "=" + conditionValue);
+                return res;
+            } else {
+                System.out.println("Connection not established - return code " + statusCode);
+            }
+        } catch (Exception ex) {
+            System.out.println("Connection exception  " + ex.toString());
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+
     private int statusCode;
 }
