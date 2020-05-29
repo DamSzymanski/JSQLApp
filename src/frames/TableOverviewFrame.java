@@ -46,12 +46,6 @@ public class TableOverviewFrame extends javax.swing.JFrame {
     private String currentTable;
     private ResultSet res;
     private DefaultTableModel tableData;
-
-    private List<Button> EditButtons;
-    private List<Button> DeleteButtons;
-    private List<String> keys;
-    private List<String> values;
-
     /**
      * Creates new form TableOverviewFrame
      */
@@ -59,11 +53,10 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         initComponents();
         this.currentDb = dbName;
         this.currentTable = tableName;
+        this.TableName.setText(currentTable);
+        this.DatabaseName.setText(currentDb);
         setLocationRelativeTo(null);
         this.setTitle("Universal Database Manager");
-
-        EditButtons = new ArrayList<Button>();
-        DeleteButtons = new ArrayList<Button>();
 
         if (appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
             res = appInit.mssqlTransactions.SelectAll(dbName, tableName);
@@ -128,18 +121,15 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         TableListPane = new javax.swing.JPanel();
         TableListScrollPane = new javax.swing.JScrollPane();
         dataOverviewTable = new javax.swing.JTable();
-        deletebutton = new javax.swing.JButton();
-        updateButton = new javax.swing.JButton();
-        insertbutton = new javax.swing.JButton();
         RecordDetailsPane = new javax.swing.JPanel();
         DatabaseLabel = new javax.swing.JLabel();
         TableLabel = new javax.swing.JLabel();
-        DatabaseName = new javax.swing.JLabel();
-        TableName = new javax.swing.JLabel();
         CreatedByLabel = new javax.swing.JLabel();
         CreatedBy = new javax.swing.JLabel();
         CreateDateLabel = new javax.swing.JLabel();
         CreateDate = new javax.swing.JLabel();
+        TableName = new javax.swing.JLabel();
+        DatabaseName = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         LogoutMenuButton = new javax.swing.JMenuItem();
@@ -177,50 +167,15 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         });
         TableListScrollPane.setViewportView(dataOverviewTable);
 
-        deletebutton.setText("Delete selected row");
-        deletebutton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deletebuttonActionPerformed(evt);
-            }
-        });
-
-        updateButton.setText("Update selected row");
-        updateButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateButtonActionPerformed(evt);
-            }
-        });
-
-        insertbutton.setText("Add new row");
-        insertbutton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                insertbuttonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout TableListPaneLayout = new javax.swing.GroupLayout(TableListPane);
         TableListPane.setLayout(TableListPaneLayout);
         TableListPaneLayout.setHorizontalGroup(
             TableListPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TableListPaneLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(updateButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(deletebutton, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(insertbutton)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(TableListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 774, Short.MAX_VALUE)
         );
         TableListPaneLayout.setVerticalGroup(
             TableListPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(TableListPaneLayout.createSequentialGroup()
-                .addComponent(TableListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(TableListPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(deletebutton)
-                    .addComponent(updateButton)
-                    .addComponent(insertbutton)))
+            .addComponent(TableListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
         );
 
         TableListScrollPane.getAccessibleContext().setAccessibleName("TableListScrollPane");
@@ -228,69 +183,44 @@ public class TableOverviewFrame extends javax.swing.JFrame {
 
         RecordDetailsPane.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        DatabaseLabel.setText("Database:");
-
-        TableLabel.setText("Table:");
-
-        DatabaseName.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-
-        TableName.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-
-        CreatedByLabel.setText("Created by:");
-
-        CreatedBy.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        CreatedBy.setText("-");
-
-        CreateDateLabel.setText("Date of creation:");
-
-        CreateDate.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        CreateDate.setText("-");
-
         javax.swing.GroupLayout RecordDetailsPaneLayout = new javax.swing.GroupLayout(RecordDetailsPane);
         RecordDetailsPane.setLayout(RecordDetailsPaneLayout);
         RecordDetailsPaneLayout.setHorizontalGroup(
             RecordDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(RecordDetailsPaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(RecordDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(DatabaseLabel)
-                    .addComponent(TableLabel))
-                .addGap(18, 18, 18)
-                .addGroup(RecordDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(DatabaseName)
-                    .addComponent(TableName))
-                .addGap(39, 39, 39)
-                .addComponent(CreatedByLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(CreatedBy)
-                .addGap(51, 51, 51)
-                .addComponent(CreateDateLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(CreateDate)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 774, Short.MAX_VALUE)
         );
         RecordDetailsPaneLayout.setVerticalGroup(
             RecordDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(RecordDetailsPaneLayout.createSequentialGroup()
-                .addGroup(RecordDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(RecordDetailsPaneLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(RecordDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(DatabaseLabel)
-                            .addComponent(DatabaseName))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(RecordDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(TableLabel)
-                            .addComponent(TableName)))
-                    .addGroup(RecordDetailsPaneLayout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(RecordDetailsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(CreatedByLabel)
-                            .addComponent(CreatedBy)
-                            .addComponent(CreateDateLabel)
-                            .addComponent(CreateDate))))
-                .addContainerGap(249, Short.MAX_VALUE))
+            .addGap(0, 310, Short.MAX_VALUE)
         );
+
+        DatabaseLabel.setText("Database:");
+        DatabaseLabel.setFocusable(false);
+
+        TableLabel.setText("Table:");
+        TableLabel.setFocusable(false);
+
+        CreatedByLabel.setText("Created by:");
+        CreatedByLabel.setFocusable(false);
+
+        CreatedBy.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        CreatedBy.setText("N/A");
+        CreatedBy.setFocusable(false);
+
+        CreateDateLabel.setText("Date of creation:");
+        CreateDateLabel.setFocusable(false);
+
+        CreateDate.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        CreateDate.setText("N/A");
+        CreateDate.setFocusable(false);
+
+        TableName.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        TableName.setText("-");
+        TableName.setFocusable(false);
+
+        DatabaseName.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        DatabaseName.setText("-");
+        DatabaseName.setFocusable(false);
 
         jMenu1.setText("File");
 
@@ -332,12 +262,50 @@ public class TableOverviewFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(TableListPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(RecordDetailsPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(DatabaseLabel)
+                    .addComponent(TableLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(DatabaseName)
+                    .addComponent(TableName))
+                .addGap(91, 91, 91)
+                .addComponent(CreatedByLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(CreatedBy)
+                .addGap(51, 51, 51)
+                .addComponent(CreateDateLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(CreateDate)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(TableListPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(CreatedByLabel)
+                            .addComponent(CreatedBy)
+                            .addComponent(CreateDateLabel)
+                            .addComponent(CreateDate))
+                        .addGap(26, 26, 26))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(DatabaseName)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(TableName))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(DatabaseLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(TableLabel)))
+                        .addGap(18, 18, 18)))
                 .addComponent(RecordDetailsPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -388,129 +356,129 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         appInit.tableOverviewFrame.dataOverviewTable.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                int row = dataOverviewTable.rowAtPoint(evt.getPoint());
-                int col = dataOverviewTable.columnAtPoint(evt.getPoint());
+                appInit.tableOverviewFrame.RecordDetailsPane.removeAll();
+                
+                JTextField textfield1;
+                JLabel label;
+                JButton updateButton;
+                JButton deleteButton;        
 
-                keys = new ArrayList<>();
-                values = new ArrayList<>();
+                appInit.tableOverviewFrame.RecordDetailsPane.setLayout(new FlowLayout());
 
-                if (row >= 0 && col >= 0) {
-                    DatabaseName.setText(currentDb);
-                    TableName.setText(currentTable);
-                    int columnCount = appInit.tableOverviewFrame.dataOverviewTable.getColumnCount();
-                    for (int c = 0; c < columnCount - 1; c++) {
-                        keys.add((String) appInit.tableOverviewFrame.dataOverviewTable.getColumnName(c));
-                        values.add((String) appInit.tableOverviewFrame.dataOverviewTable.getValueAt(row, c));
-                    }
+                int row = dataOverviewTable.getSelectedRow();
+                int columnCount = appInit.tableOverviewFrame.dataOverviewTable.getColumnCount();
+                //int rowCount = appInit.tableOverviewFrame.dataOverviewTable.getRowCount();
+                DefaultTableModel model = (DefaultTableModel) dataOverviewTable.getModel();
 
-                    for (int k = 0; k < keys.size(); k++) {
-                        appInit.tableOverviewFrame.add(new JLabel(keys.get(k)));
-                    }
-                    for (int v = 0; v < values.size(); v++) {
-                        appInit.tableOverviewFrame.add(new JTextField(values.get(v)));
-                    }
-                    appInit.tableOverviewFrame.revalidate();
-                    appInit.tableOverviewFrame.repaint();
-                    SwingUtilities.updateComponentTreeUI(appInit.tableOverviewFrame);
-
-                    //DEBUG
-                    System.out.println("KEYS");
-                    for (int i = 0; i < keys.size(); i++) {
-                        System.out.println(keys.get(i));
-                    }
-                    System.out.println("VALUES");
-                    for (int j = 0; j < values.size(); j++) {
-                        System.out.println(values.get(j));
-                    }
+                for (int iCol = 1; iCol <= columnCount; iCol++) {
+                    String headerValue = dataOverviewTable.getColumnName(iCol - 1);
+                    String value = (model.getValueAt(row, iCol - 1) == null) ? null : model.getValueAt(row, iCol - 1).toString();
+                    textfield1 = new JTextField(value, 10);
+                    label = new JLabel(headerValue);
+                    appInit.tableOverviewFrame.RecordDetailsPane.add(label);
+                    //appInit.dbTransactionFrame.getContentPane().add(label);
+                    appInit.tableOverviewFrame.RecordDetailsPane.add(textfield1);
+                    //appInit.dbTransactionFrame.getContentPane().add(textfield1);
                 }
+
+                updateButton = new JButton("Update");
+                updateButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (row >= 0) {
+                            int res = 0;
+                            int header = dataOverviewTable.getSelectedColumn();
+                            String headerValue = dataOverviewTable.getColumnName(header);
+                            String value = dataOverviewTable.getModel().getValueAt(row, dataOverviewTable.getSelectedColumn()).toString();
+                            //podjęcie działania w zależności od serwera bazodanowego
+                            try {
+                                String updateString = "";
+                                //updateString build
+                                for (int iCol = 2; iCol <= columnCount; iCol++) {
+                                    String columnValue = (dataOverviewTable.getValueAt(row, iCol - 1) == null) ? null : dataOverviewTable.getValueAt(row, iCol - 1).toString();
+                                    String valueQueryString = testParse(columnValue);
+                                    if (iCol == columnCount) {
+                                        updateString += dataOverviewTable.getColumnName(iCol - 1) + "=" + valueQueryString+" ";
+                                    } else {
+                                        updateString += dataOverviewTable.getColumnName(iCol - 1) + "=" + valueQueryString + ", ";
+                                    }
+                                }
+                                if (appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
+                                    if (appInit.mssqlConnection.connection.isClosed() != true) {
+                                        res = appInit.mssqlTransactions.Update(updateString, appInit.tableOverviewFrame.currentTable, headerValue, value);
+                                    }
+                                } else if (appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
+                                    if (appInit.mysqlConnection.connection.isClosed() != true) {
+                                        res = appInit.mssqlTransactions.Update(updateString, appInit.tableOverviewFrame.currentTable, headerValue, value);
+                                    }
+                                }
+                                //zwrotka w zależności od resulta
+                                if (res == 1) {
+                                    JOptionPane.showMessageDialog(rootPane, "Update successfull!");
+                                    appInit.tableOverviewFrame.RecordDetailsPane.removeAll();
+                                    model.fireTableDataChanged();
+                                } else {
+                                    JOptionPane.showMessageDialog(rootPane, "Error during record update");
+                                }
+                            } catch (SQLException ex) {
+                                Logger.getLogger(TableOverviewFrame.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(rootPane, "Row not selected");
+                        }
+                    } 
+                });
+
+                deleteButton = new JButton("Delete");
+                deleteButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (row >= 0) {
+                            int header = 0;
+                            String headerValue = dataOverviewTable.getColumnName(header);
+                            String value = dataOverviewTable.getModel().getValueAt(row, header).toString();
+                            try {
+                                if (appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
+                                    if (appInit.mssqlConnection.connection.isClosed() != true) {
+                                        int res = appInit.mssqlTransactions.Delete(appInit.tableOverviewFrame.currentDb, appInit.tableOverviewFrame.currentTable, headerValue, value);
+                                        if (res == 1) {
+                                            model.removeRow(row);
+                                            JOptionPane.showMessageDialog(rootPane, "Successfully deleted");
+                                            appInit.tableOverviewFrame.RecordDetailsPane.removeAll();
+
+                                        } else {
+                                            JOptionPane.showMessageDialog(rootPane, "Delete error");
+                                        }
+
+                                    }
+                                } else if (appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
+                                    if (appInit.mysqlConnection.connection.isClosed() != true) {
+                                        int res = appInit.mysqlTransactions.Delete(appInit.tableOverviewFrame.currentDb, appInit.tableOverviewFrame.currentTable, headerValue, value);
+                                        System.out.println(res);
+                                        if (res == 1) {
+                                            model.removeRow(row);
+                                            JOptionPane.showMessageDialog(rootPane, "Successfully deleted");
+                                            appInit.tableOverviewFrame.RecordDetailsPane.removeAll();
+
+                                        } else {
+                                            JOptionPane.showMessageDialog(rootPane, "Delete error");
+                                        }
+                                    }
+                                }
+                            } catch (SQLException ex) {
+                                Logger.getLogger(TableOverviewFrame.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(rootPane, "Row not selected");
+                        }
+                    }
+                });
+                appInit.tableOverviewFrame.RecordDetailsPane.add(updateButton);
+                appInit.tableOverviewFrame.RecordDetailsPane.add(deleteButton);
+                appInit.tableOverviewFrame.pack();
             }
         });
     }//GEN-LAST:event_dataOverviewTableMouseClicked
-
-    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-
-        JTextField textfield1;
-        JLabel label;
-        JButton saveBtn;
-        int row = dataOverviewTable.getSelectedRow();
-        if (row >= 0) {
-            DefaultTableModel model = (DefaultTableModel) dataOverviewTable.getModel();
-
-            appInit.insertorUpdateFrame = new InsertUpdateFrame();
-            appInit.insertorUpdateFrame.setSize(600, 600);
-            appInit.insertorUpdateFrame.setTitle("Data Edition");
-            appInit.insertorUpdateFrame.getContentPane().setLayout(new FlowLayout());
-            int columnCount = appInit.tableOverviewFrame.dataOverviewTable.getColumnCount();
-            for (int iCol = 1; iCol <= columnCount; iCol++) {
-
-                String headerValue = dataOverviewTable.getColumnName(iCol - 1);
-                String value = (model.getValueAt(row, iCol - 1) == null) ? null : model.getValueAt(row, iCol - 1).toString();
-
-                textfield1 = new JTextField(value, 10);
-                label = new JLabel(headerValue);
-                appInit.insertorUpdateFrame.getContentPane().add(label);
-
-                appInit.insertorUpdateFrame.getContentPane().add(textfield1);
-
-            }
-            saveBtn = new JButton("Save");
-            saveBtn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    int res = 0;
-                    int header = dataOverviewTable.getSelectedColumn();
-                    String headerValue = dataOverviewTable.getColumnName(header);
-                    String value = dataOverviewTable.getModel().getValueAt(row, dataOverviewTable.getSelectedColumn()).toString();
-                    //podjęcie działania w zależności od serwera bazodanowego
-                    try {
-                        String updateString = "";
-
-                        //updateString build
-                        for (int iCol = 2; iCol <= columnCount; iCol++) {
-                            String columnValue = (dataOverviewTable.getValueAt(row, iCol - 1) == null) ? null : dataOverviewTable.getValueAt(row, iCol - 1).toString();
-                            String valueQueryString = testParse(columnValue);
-                            if (iCol == columnCount) {
-                                updateString += dataOverviewTable.getColumnName(iCol - 1) + "=" + valueQueryString+" ";
-                            } else {
-                                updateString += dataOverviewTable.getColumnName(iCol - 1) + "=" + valueQueryString + ", ";
-                            }
-
-                        }
-                        if (appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
-                            if (appInit.mssqlConnection.connection.isClosed() != true) {
-
-                                res = appInit.mssqlTransactions.Update(updateString, currentTable, headerValue, value);
-                            }
-                        } else if (appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
-                            if (appInit.mysqlConnection.connection.isClosed() != true) {
-                                res = appInit.mssqlTransactions.Update(updateString, currentTable, headerValue, value);
-                            }
-
-                        }
-                        //zwrotka w zależności od resulta
-                        if (res == 1) {
-                            JOptionPane.showMessageDialog(rootPane, "Update successfull");
-
-                        } else {
-                            JOptionPane.showMessageDialog(rootPane, "Error during record update");
-                        }
-                    } catch (SQLException ex) {
-                        Logger.getLogger(TableOverviewFrame.class.getName()).log(Level.SEVERE, null, ex);
-
-                    }
-                }
-            });
-            appInit.insertorUpdateFrame.getContentPane().add(saveBtn);
-
-            appInit.insertorUpdateFrame.pack();
-            appInit.insertorUpdateFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-            appInit.insertorUpdateFrame.setVisible(true);
-
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "Row not selected");
-        }
-
-    }//GEN-LAST:event_updateButtonActionPerformed
     private String testParse(String value) {
         try {
             Integer.parseInt(value);
@@ -525,91 +493,6 @@ public class TableOverviewFrame extends javax.swing.JFrame {
             }
         }
     }
-    private void deletebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletebuttonActionPerformed
-
-        int row = dataOverviewTable.getSelectedRow();
-        if (row >= 0) {
-            DefaultTableModel model = (DefaultTableModel) dataOverviewTable.getModel();
-            int header = dataOverviewTable.getSelectedColumn();
-            String headerValue = dataOverviewTable.getColumnName(header);
-            String value = dataOverviewTable.getModel().getValueAt(row, dataOverviewTable.getSelectedColumn()).toString();
-            try {
-                if (appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
-                    if (appInit.mssqlConnection.connection.isClosed() != true) {
-                        int res = appInit.mssqlTransactions.Delete(this.currentDb, this.currentTable, headerValue, value);
-                        if (res == 1) {
-                            model.removeRow(row);
-                            JOptionPane.showMessageDialog(rootPane, "Successfully delete");
-
-                        } else {
-                            JOptionPane.showMessageDialog(rootPane, "Delete error");
-                        }
-
-                    }
-                } else if (appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
-                    if (appInit.mysqlConnection.connection.isClosed() != true) {
-                        int res = appInit.mysqlTransactions.Delete(this.currentDb, this.currentTable, headerValue, value);
-                        System.out.println(res);
-                        if (res == 1) {
-                            model.removeRow(row);
-                            JOptionPane.showMessageDialog(rootPane, "Successfully delete");
-
-                        } else {
-                            JOptionPane.showMessageDialog(rootPane, "Delete error");
-                        }
-
-                    }
-                }
-
-            } catch (SQLException ex) {
-                Logger.getLogger(TableOverviewFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "Row not selected");
-        }
-
-    }//GEN-LAST:event_deletebuttonActionPerformed
-
-    private void insertbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertbuttonActionPerformed
-        // TODO add your handling code here:
-        JTextField textfield1;
-        JLabel label;
-        JButton saveBtn;
-        int row = dataOverviewTable.getSelectedRow();
-        if (row >= 0) {
-            DefaultTableModel model = (DefaultTableModel) dataOverviewTable.getModel();
-
-            appInit.insertorUpdateFrame = new InsertUpdateFrame();
-            appInit.insertorUpdateFrame.setSize(600, 600);
-            appInit.insertorUpdateFrame.setTitle("Add new entry");
-            appInit.insertorUpdateFrame.getContentPane().setLayout(new FlowLayout());
-            int columnCount = appInit.tableOverviewFrame.dataOverviewTable.getColumnCount();
-            for (int iCol = 1; iCol <= columnCount; iCol++) {
-
-                String headerValue = dataOverviewTable.getColumnName(iCol - 1);
-
-                textfield1 = new JTextField("", 10);
-                label = new JLabel(headerValue);
-                appInit.insertorUpdateFrame.getContentPane().add(label);
-
-                appInit.insertorUpdateFrame.getContentPane().add(textfield1);
-
-            }
-            saveBtn = new JButton("Save");
-            saveBtn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("eloszka");
-                }
-            });
-            appInit.insertorUpdateFrame.getContentPane().add(saveBtn);
-
-            appInit.insertorUpdateFrame.pack();
-            appInit.insertorUpdateFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-            appInit.insertorUpdateFrame.setVisible(true);
-        }
-    }//GEN-LAST:event_insertbuttonActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -657,13 +540,10 @@ public class TableOverviewFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane TableListScrollPane;
     private javax.swing.JLabel TableName;
     private javax.swing.JTable dataOverviewTable;
-    private javax.swing.JButton deletebutton;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.JButton insertbutton;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 
 }

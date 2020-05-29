@@ -6,7 +6,6 @@
 package classes;
 
 import frames.AboutFrame;
-import frames.InsertUpdateFrame;
 import frames.TableSelectFrame;
 import frames.LoginFrame;
 import frames.TableOverviewFrame;
@@ -62,7 +61,6 @@ public class AppInit extends Application {
     public TableOverviewFrame tableOverviewFrame;
     public AboutFrame aboutFrame;
     public TableSelectFrame tableSelectFrame;
-    public InsertUpdateFrame insertorUpdateFrame;
     public MSSQLConnection mssqlConnection;
     public MSSQLTransactions mssqlTransactions;
     public String engine;
