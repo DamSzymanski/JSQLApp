@@ -46,6 +46,8 @@ public class TableOverviewFrame extends javax.swing.JFrame {
     private String currentTable;
     private ResultSet res;
     private DefaultTableModel tableData;
+    private ArrayList<JTextField> transactionFields;
+    private ArrayList<String> columnNames;
     /**
      * Creates new form TableOverviewFrame
      */
@@ -57,55 +59,8 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         this.DatabaseName.setText(currentDb);
         setLocationRelativeTo(null);
         this.setTitle("Universal Database Manager");
-
-        if (appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
-            res = appInit.mssqlTransactions.SelectAll(dbName, tableName);
-        } else if (appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
-            res = appInit.mysqlTransactions.SelectAll(dbName, tableName);
-        }
-        try {
-            tableData = new DefaultTableModel();
-
-            //liczenie kolumn
-            ResultSetMetaData md = res.getMetaData();
-            int columnCount = md.getColumnCount();
-
-            //nagłówki kolumn
-            List<Object> tableHeaders = new ArrayList<Object>();
-            for (int i = 1; i <= columnCount; i++) {
-                tableHeaders.add(md.getColumnName(i));
-            }
-            columnCount++;
-            //test data
-            Object[][] data = new Object[][]{};
-
-            List<Object[]> table = new ArrayList<>();
-            while (res.next()) {
-                Object[] row = new Object[columnCount];
-                for (int iCol = 1; iCol < columnCount; iCol++) {
-                    Object obj = res.getObject(iCol);
-
-                    row[iCol - 1] = (obj == null) ? null : obj.toString();
-
-                    //System.out.println(obj.toString());
-                }
-                table.add(row);
-            }
-
-            data = new Object[columnCount][];
-            table.toArray(data);
-            dataOverviewTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            dataOverviewTable.setModel(new DefaultTableModel(table.toArray(data), tableHeaders.toArray()) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    return false;
-                }
-            });
-
-        } catch (SQLException ex) {
-            Logger.getLogger(TableSelectFrame.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println(ex.toString());
-        }
+        
+        DrawTable();
     }
 
     /**
@@ -136,6 +91,7 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         ExitMenuButton = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         SwitchTableMenuButton = new javax.swing.JMenuItem();
+        addNewRow = new javax.swing.JMenuItem();
 
         setLocation(new java.awt.Point(1, 1));
         setMinimumSize(new java.awt.Dimension(1280, 1024));
@@ -252,6 +208,14 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         });
         jMenu2.add(SwitchTableMenuButton);
 
+        addNewRow.setText("Add new row");
+        addNewRow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addNewRowActionPerformed(evt);
+            }
+        });
+        jMenu2.add(addNewRow);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -358,11 +322,13 @@ public class TableOverviewFrame extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 appInit.tableOverviewFrame.RecordDetailsPane.removeAll();
                 
-                JTextField textfield1;
+                //JTextField textfield1;
                 JLabel label;
                 JButton updateButton;
                 JButton deleteButton;        
-
+                transactionFields = new ArrayList<JTextField>();
+                columnNames = new ArrayList<String>();
+                
                 appInit.tableOverviewFrame.RecordDetailsPane.setLayout(new FlowLayout());
 
                 int row = dataOverviewTable.getSelectedRow();
@@ -371,13 +337,14 @@ public class TableOverviewFrame extends javax.swing.JFrame {
                 DefaultTableModel model = (DefaultTableModel) dataOverviewTable.getModel();
 
                 for (int iCol = 1; iCol <= columnCount; iCol++) {
-                    String headerValue = dataOverviewTable.getColumnName(iCol - 1);
+                    columnNames.add(dataOverviewTable.getColumnName(iCol - 1));
                     String value = (model.getValueAt(row, iCol - 1) == null) ? null : model.getValueAt(row, iCol - 1).toString();
-                    textfield1 = new JTextField(value, 10);
-                    label = new JLabel(headerValue);
+                    //textfield1 = new JTextField(value, 10);
+                    transactionFields.add(new JTextField(value, 10));
+                    label = new JLabel(columnNames.get(iCol - 1));
                     appInit.tableOverviewFrame.RecordDetailsPane.add(label);
                     //appInit.dbTransactionFrame.getContentPane().add(label);
-                    appInit.tableOverviewFrame.RecordDetailsPane.add(textfield1);
+                    appInit.tableOverviewFrame.RecordDetailsPane.add(transactionFields.get(iCol - 1));
                     //appInit.dbTransactionFrame.getContentPane().add(textfield1);
                 }
 
@@ -387,20 +354,20 @@ public class TableOverviewFrame extends javax.swing.JFrame {
                     public void actionPerformed(ActionEvent e) {
                         if (row >= 0) {
                             int res = 0;
-                            int header = dataOverviewTable.getSelectedColumn();
+                            int header = 0;
                             String headerValue = dataOverviewTable.getColumnName(header);
-                            String value = dataOverviewTable.getModel().getValueAt(row, dataOverviewTable.getSelectedColumn()).toString();
+                            String value = model.getValueAt(row, header).toString();
                             //podjęcie działania w zależności od serwera bazodanowego
                             try {
                                 String updateString = "";
                                 //updateString build
                                 for (int iCol = 2; iCol <= columnCount; iCol++) {
-                                    String columnValue = (dataOverviewTable.getValueAt(row, iCol - 1) == null) ? null : dataOverviewTable.getValueAt(row, iCol - 1).toString();
+                                    String columnValue = (transactionFields.get(iCol - 1) == null) ? null : transactionFields.get(iCol - 1).getText();
                                     String valueQueryString = testParse(columnValue);
                                     if (iCol == columnCount) {
-                                        updateString += dataOverviewTable.getColumnName(iCol - 1) + "=" + valueQueryString+" ";
+                                        updateString += columnNames.get(iCol - 1) + "=" + valueQueryString+" ";
                                     } else {
-                                        updateString += dataOverviewTable.getColumnName(iCol - 1) + "=" + valueQueryString + ", ";
+                                        updateString += columnNames.get(iCol - 1) + "=" + valueQueryString + ", ";
                                     }
                                 }
                                 if (appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
@@ -416,7 +383,9 @@ public class TableOverviewFrame extends javax.swing.JFrame {
                                 if (res == 1) {
                                     JOptionPane.showMessageDialog(rootPane, "Update successfull!");
                                     appInit.tableOverviewFrame.RecordDetailsPane.removeAll();
-                                    model.fireTableDataChanged();
+                                    transactionFields.clear();
+                                    columnNames.clear();
+                                    DrawTable();
                                 } else {
                                     JOptionPane.showMessageDialog(rootPane, "Error during record update");
                                 }
@@ -479,6 +448,67 @@ public class TableOverviewFrame extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_dataOverviewTableMouseClicked
+
+    private void addNewRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewRowActionPerformed
+        appInit.tableOverviewFrame.RecordDetailsPane.removeAll();
+        
+        JLabel label;
+        JButton addNewRowButton = new JButton("Insert row");   
+        
+        ArrayList<String> values = new ArrayList<String>();
+        
+        transactionFields = new ArrayList<JTextField>();
+        columnNames = new ArrayList<String>();     
+        
+        appInit.tableOverviewFrame.RecordDetailsPane.setLayout(new FlowLayout());
+        
+        int columnCount = appInit.tableOverviewFrame.dataOverviewTable.getColumnCount();
+        
+        for (int iCol = 1; iCol <= columnCount; iCol++) {
+            columnNames.add(dataOverviewTable.getColumnName(iCol - 1));
+            //String value = (model.getValueAt(row, iCol - 1) == null) ? null : model.getValueAt(row, iCol - 1).toString();
+            transactionFields.add(new JTextField(null, 10));
+            label = new JLabel(columnNames.get(iCol - 1));
+            appInit.tableOverviewFrame.RecordDetailsPane.add(label);
+            appInit.tableOverviewFrame.RecordDetailsPane.add(transactionFields.get(iCol - 1));
+        }
+        
+        addNewRowButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int res = 0;
+                try {            
+                    for (int i = 0; i < transactionFields.size(); i++) {
+                        values.add(transactionFields.get(i).getText());
+                    }
+                    if (appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
+                        if (appInit.mssqlConnection.connection.isClosed() != true) {
+                            res = appInit.mssqlTransactions.Insert(currentDb, currentTable, values);
+                        }
+                    } else if (appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
+                        if (appInit.mysqlConnection.connection.isClosed() != true) {
+                            res = appInit.mysqlTransactions.Insert(currentDb, currentTable, columnNames, values);
+                        }
+                    }
+                    if (res == 1) {
+                        JOptionPane.showMessageDialog(rootPane, "Row inserted!");
+                        appInit.tableOverviewFrame.RecordDetailsPane.removeAll();
+                        transactionFields.clear();
+                        columnNames.clear();
+                        values.clear();
+                        DrawTable();
+                    } else {
+                        JOptionPane.showMessageDialog(rootPane, "Error during inserting row");
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(TableOverviewFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } 
+        });
+        
+        appInit.tableOverviewFrame.RecordDetailsPane.add(addNewRowButton);
+        appInit.tableOverviewFrame.pack();
+    }//GEN-LAST:event_addNewRowActionPerformed
     private String testParse(String value) {
         try {
             Integer.parseInt(value);
@@ -493,6 +523,58 @@ public class TableOverviewFrame extends javax.swing.JFrame {
             }
         }
     }
+    
+    private void DrawTable() {
+        if (appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
+            res = appInit.mssqlTransactions.SelectAll(currentDb, currentTable);
+        } else if (appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
+            res = appInit.mysqlTransactions.SelectAll(currentDb, currentTable);
+        }
+        try {
+            tableData = new DefaultTableModel();
+
+            //liczenie kolumn
+            ResultSetMetaData md = res.getMetaData();
+            int columnCount = md.getColumnCount();
+
+            //nagłówki kolumn
+            List<Object> tableHeaders = new ArrayList<Object>();
+            for (int i = 1; i <= columnCount; i++) {
+                tableHeaders.add(md.getColumnName(i));
+            }
+            columnCount++;
+            //test data
+            Object[][] data = new Object[][]{};
+
+            List<Object[]> table = new ArrayList<>();
+            while (res.next()) {
+                Object[] row = new Object[columnCount];
+                for (int iCol = 1; iCol < columnCount; iCol++) {
+                    Object obj = res.getObject(iCol);
+
+                    row[iCol - 1] = (obj == null) ? null : obj.toString();
+
+                    //System.out.println(obj.toString());
+                }
+                table.add(row);
+            }
+
+            data = new Object[columnCount][];
+            table.toArray(data);
+            dataOverviewTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            dataOverviewTable.setModel(new DefaultTableModel(table.toArray(data), tableHeaders.toArray()) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            });
+
+        } catch (SQLException ex) {
+            Logger.getLogger(TableSelectFrame.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -539,6 +621,7 @@ public class TableOverviewFrame extends javax.swing.JFrame {
     private javax.swing.JPanel TableListPane;
     private javax.swing.JScrollPane TableListScrollPane;
     private javax.swing.JLabel TableName;
+    private javax.swing.JMenuItem addNewRow;
     private javax.swing.JTable dataOverviewTable;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JMenu jMenu1;

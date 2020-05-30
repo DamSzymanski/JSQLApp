@@ -142,12 +142,39 @@ public class MySQLTransactions {
     }
 
     //insert
-    public int Insert(String dbName, String tableName, String columnName, String conditionValue) {
+    public int Insert(String dbName, String tableName, ArrayList<String> columns, ArrayList<String> values) {
         try {
-            statusCode = appInit.mssqlConnection.CheckConnectionStatus();
+            statusCode = appInit.mysqlConnection.CheckConnectionStatus();
             if (statusCode == 1) {
-                Statement stmt = appInit.mssqlConnection.connection.createStatement();
-                int res = stmt.executeUpdate("update " + tableName + " set " + columnName + "=" + conditionValue);
+                Statement stmt = appInit.mysqlConnection.connection.createStatement();
+                String query = "insert into " + tableName + " (";
+                for(int i = 0; i < columns.size(); i++) {
+                    if(i < columns.size() - 1) {
+                        query += columns.get(i) + ",";
+                    }
+                    else {
+                        query += columns.get(i) + ") values (";
+                    }
+                }
+                for(int i = 0; i < values.size(); i++) {
+                    try {
+                        Integer.parseInt(values.get(i));
+                        if(i < values.size() - 1) {
+                            query += values.get(i) + ",";
+                        }
+                        else {
+                            query += values.get(i) + ")";  
+                        }
+                    } catch(NumberFormatException ex) {
+                        if(i < values.size() - 1) {
+                            query += "'" + values.get(i) + "',";    
+                        }
+                        else {
+                            query += "'" + values.get(i) + "')";
+                        }
+                    }
+                }
+                int res = stmt.executeUpdate(query);
                 return res;
             } else {
                 System.out.println("Connection not established - return code " + statusCode);
