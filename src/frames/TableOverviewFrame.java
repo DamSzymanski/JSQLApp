@@ -57,7 +57,6 @@ public class TableOverviewFrame extends javax.swing.JFrame {
         this.currentTable = tableName;
         this.TableName.setText(currentTable);
         this.DatabaseName.setText(currentDb);
-        setLocationRelativeTo(null);
         this.setTitle("Universal Database Manager");
         
         DrawTable();
@@ -329,6 +328,9 @@ public class TableOverviewFrame extends javax.swing.JFrame {
                 transactionFields = new ArrayList<JTextField>();
                 columnNames = new ArrayList<String>();
                 
+                updateButton = new JButton("Update");
+                deleteButton = new JButton("Delete");
+                
                 appInit.tableOverviewFrame.RecordDetailsPane.setLayout(new FlowLayout());
 
                 int row = dataOverviewTable.getSelectedRow();
@@ -347,8 +349,11 @@ public class TableOverviewFrame extends javax.swing.JFrame {
                     appInit.tableOverviewFrame.RecordDetailsPane.add(transactionFields.get(iCol - 1));
                     //appInit.dbTransactionFrame.getContentPane().add(textfield1);
                 }
+                
+                appInit.tableOverviewFrame.RecordDetailsPane.add(updateButton);
+                appInit.tableOverviewFrame.RecordDetailsPane.add(deleteButton);
+                appInit.tableOverviewFrame.pack();                
 
-                updateButton = new JButton("Update");
                 updateButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -376,15 +381,12 @@ public class TableOverviewFrame extends javax.swing.JFrame {
                                     }
                                 } else if (appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
                                     if (appInit.mysqlConnection.connection.isClosed() != true) {
-                                        res = appInit.mssqlTransactions.Update(updateString, appInit.tableOverviewFrame.currentTable, headerValue, value);
+                                        res = appInit.mysqlTransactions.Update(updateString, appInit.tableOverviewFrame.currentTable, headerValue, value);
                                     }
                                 }
                                 //zwrotka w zależności od resulta
                                 if (res == 1) {
                                     JOptionPane.showMessageDialog(rootPane, "Update successfull!");
-                                    appInit.tableOverviewFrame.RecordDetailsPane.removeAll();
-                                    transactionFields.clear();
-                                    columnNames.clear();
                                     DrawTable();
                                 } else {
                                     JOptionPane.showMessageDialog(rootPane, "Error during record update");
@@ -395,10 +397,13 @@ public class TableOverviewFrame extends javax.swing.JFrame {
                         } else {
                             JOptionPane.showMessageDialog(rootPane, "Row not selected");
                         }
+                        
+                        appInit.tableOverviewFrame.RecordDetailsPane.removeAll();
+                        transactionFields.clear();
+                        columnNames.clear();
                     } 
                 });
-
-                deleteButton = new JButton("Delete");
+                
                 deleteButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -442,15 +447,14 @@ public class TableOverviewFrame extends javax.swing.JFrame {
                         }
                     }
                 });
-                appInit.tableOverviewFrame.RecordDetailsPane.add(updateButton);
-                appInit.tableOverviewFrame.RecordDetailsPane.add(deleteButton);
-                appInit.tableOverviewFrame.pack();
             }
         });
     }//GEN-LAST:event_dataOverviewTableMouseClicked
 
     private void addNewRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNewRowActionPerformed
         appInit.tableOverviewFrame.RecordDetailsPane.removeAll();
+        revalidate();
+        repaint();
         
         JLabel label;
         JButton addNewRowButton = new JButton("Insert row");   
@@ -473,6 +477,9 @@ public class TableOverviewFrame extends javax.swing.JFrame {
             appInit.tableOverviewFrame.RecordDetailsPane.add(transactionFields.get(iCol - 1));
         }
         
+        appInit.tableOverviewFrame.RecordDetailsPane.add(addNewRowButton);
+        appInit.tableOverviewFrame.pack();
+        
         addNewRowButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -483,11 +490,11 @@ public class TableOverviewFrame extends javax.swing.JFrame {
                     }
                     if (appInit.engine.equals(EnginesEnum.Engines.MSSQL.toString())) {
                         if (appInit.mssqlConnection.connection.isClosed() != true) {
-                            res = appInit.mssqlTransactions.Insert(currentDb, currentTable, values);
+                            res = appInit.mssqlTransactions.Insert(currentTable, values);
                         }
                     } else if (appInit.engine.equals(EnginesEnum.Engines.MySQL.toString())) {
                         if (appInit.mysqlConnection.connection.isClosed() != true) {
-                            res = appInit.mysqlTransactions.Insert(currentDb, currentTable, columnNames, values);
+                            res = appInit.mysqlTransactions.Insert(currentTable, columnNames, values);
                         }
                     }
                     if (res == 1) {
@@ -505,10 +512,8 @@ public class TableOverviewFrame extends javax.swing.JFrame {
                 }
             } 
         });
-        
-        appInit.tableOverviewFrame.RecordDetailsPane.add(addNewRowButton);
-        appInit.tableOverviewFrame.pack();
     }//GEN-LAST:event_addNewRowActionPerformed
+    
     private String testParse(String value) {
         try {
             Integer.parseInt(value);

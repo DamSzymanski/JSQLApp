@@ -206,6 +206,7 @@ public class TableSelectFrame extends javax.swing.JFrame {
             appInit.tableOverviewFrame.setSize(600,600);
             appInit.tableOverviewFrame.setVisible(true);
             appInit.tableOverviewFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+            appInit.tableOverviewFrame.setLocationRelativeTo(null);
             this.setVisible(false);
         }
         else
@@ -217,6 +218,7 @@ public class TableSelectFrame extends javax.swing.JFrame {
         appInit.aboutFrame.setSize(600,500);                
         appInit.aboutFrame.setResizable(false);
         appInit.aboutFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        appInit.aboutFrame.setLocationRelativeTo(null);
         appInit.aboutFrame.setVisible(true);
     }//GEN-LAST:event_AboutOptActionPerformed
 

@@ -142,7 +142,7 @@ public class MySQLTransactions {
     }
 
     //insert
-    public int Insert(String dbName, String tableName, ArrayList<String> columns, ArrayList<String> values) {
+    public int Insert(String tableName, ArrayList<String> columns, ArrayList<String> values) {
         try {
             statusCode = appInit.mysqlConnection.CheckConnectionStatus();
             if (statusCode == 1) {

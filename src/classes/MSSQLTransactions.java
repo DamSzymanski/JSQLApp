@@ -202,7 +202,7 @@ public class MSSQLTransactions {
     }
 
     //insert
-    public int Insert(String dbName, String tableName, ArrayList<String> values) {
+    public int Insert(String tableName, ArrayList<String> values) {
         try {
             statusCode = appInit.mssqlConnection.CheckConnectionStatus();
             if (statusCode == 1) {
