@@ -3,6 +3,18 @@
 ### Description
 JSQL is a Java GUI app allowing user to establish connection with and manage MS SQL and MySQL database engines. It was created in Java 8 and JavaFX technologies and uses SQLjdbc library for DB communication. It creates a dynamic view of the selected table and provides a simple CRUD interface. JSQL requires user to have an existing account in the target database with proper privileges. In overall, it is a lightweight, intuitive environment, available to everyone.
 
+### Table of contents
+[Authors](#authors)<br />
+[Licence](#licence)<br />
+[Requirements](#requirements)<br />
+[Applicative requirements](#applicative_requirements)<br />
+[Non-applicative requirements](#non-applicative_requirements)<br />
+[Core components](#core_components)<br />
+[Tests](#tests)<br />
+[Test scenarios](#test_scenarios)<br />
+[Test summary](#test_summary)
+
+
 ### Authors
 1. Jakub Sarnowski (https://github.com/jsarnowski96)
 2. Damian Szymański
