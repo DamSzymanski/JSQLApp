@@ -50,6 +50,14 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SwitchTableMenuButtonActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="addNewRow">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Add new row"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addNewRowActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
       </SubComponents>
@@ -92,13 +100,61 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="TableListPane" max="32767" attributes="0"/>
           <Component id="RecordDetailsPane" alignment="0" max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="DatabaseLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="TableLabel" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="DatabaseName" min="-2" max="-2" attributes="0"/>
+                  <Component id="TableName" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
+              <Component id="CreatedByLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="CreatedBy" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+              <Component id="CreateDateLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="CreateDate" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="TableListPane" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="CreatedByLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="CreatedBy" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="CreateDateLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="CreateDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="DatabaseName" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="TableName" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="DatabaseLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="TableLabel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
               <Component id="RecordDetailsPane" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -117,29 +173,12 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                  <Component id="updateButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="deletebutton" min="-2" pref="131" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="insertbutton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              </Group>
               <Component id="TableListScrollPane" pref="774" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <Component id="TableListScrollPane" pref="430" max="32767" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="deletebutton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="updateButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="insertbutton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
+              <Component id="TableListScrollPane" alignment="0" pref="380" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -197,30 +236,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JButton" name="deletebutton">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Delete selected row"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deletebuttonActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="updateButton">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Update selected row"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateButtonActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="insertbutton">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Add new row"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="insertbuttonActionPerformed"/>
-          </Events>
-        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="RecordDetailsPane">
@@ -235,112 +250,75 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="DatabaseLabel" min="-2" max="-2" attributes="0"/>
-                      <Component id="TableLabel" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="DatabaseName" min="-2" max="-2" attributes="0"/>
-                      <Component id="TableName" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
-                  <Component id="CreatedByLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="CreatedBy" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
-                  <Component id="CreateDateLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="CreateDate" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
+              <EmptySpace min="0" pref="774" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="DatabaseLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="DatabaseName" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="TableLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="TableName" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="CreatedByLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="CreatedBy" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="CreateDateLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="CreateDate" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                  </Group>
-                  <EmptySpace pref="249" max="32767" attributes="0"/>
-              </Group>
+              <EmptySpace min="0" pref="310" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
-      <SubComponents>
-        <Component class="javax.swing.JLabel" name="DatabaseLabel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Database:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="TableLabel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Table:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="DatabaseName">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="11" style="1"/>
-            </Property>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="TableName">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="11" style="1"/>
-            </Property>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="CreatedByLabel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Created by:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="CreatedBy">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="11" style="1"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="-"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="CreateDateLabel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Date of creation:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="CreateDate">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="11" style="1"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="-"/>
-          </Properties>
-        </Component>
-      </SubComponents>
     </Container>
+    <Component class="javax.swing.JLabel" name="DatabaseLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Database:"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="TableLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Table:"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="CreatedByLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Created by:"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="CreatedBy">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="N/A"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="CreateDateLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Date of creation:"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="CreateDate">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="N/A"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="TableName">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="-"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="DatabaseName">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="-"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

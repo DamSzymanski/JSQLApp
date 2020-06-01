@@ -226,6 +226,7 @@ public class LoginFrame extends javax.swing.JFrame {
                   appInit.tableSelectFrame=new TableSelectFrame();
                   appInit.tableSelectFrame.setSize(400,400);
                   appInit.tableSelectFrame.setResizable(false);
+                  appInit.tableSelectFrame.setLocationRelativeTo(null);
                   appInit.tableSelectFrame.setVisible(true);
                   this.setVisible(false);    
                 }
@@ -243,6 +244,7 @@ public class LoginFrame extends javax.swing.JFrame {
                    appInit.tableSelectFrame=new TableSelectFrame();
                    appInit.tableSelectFrame.setSize(400,400);
                    appInit.tableSelectFrame.setResizable(false);
+                   appInit.tableSelectFrame.setLocationRelativeTo(null);
                    appInit.tableSelectFrame.setVisible(true);   
                  }
                 }

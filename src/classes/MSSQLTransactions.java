@@ -8,6 +8,7 @@ package classes;
 import classes.MSSQLConnection;
 import static classes.AppInit.*;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -201,12 +202,31 @@ public class MSSQLTransactions {
     }
 
     //insert
-    public int Insert(String dbName, String tableName, String columnName, String conditionValue) {
+    public int Insert(String tableName, ArrayList<String> values) {
         try {
             statusCode = appInit.mssqlConnection.CheckConnectionStatus();
             if (statusCode == 1) {
                 Statement stmt = appInit.mssqlConnection.connection.createStatement();
-                int res = stmt.executeUpdate("update " + tableName + " set " + columnName + "=" + conditionValue);
+                String query = "insert into " + tableName + " values (";
+                for(int i = 0; i < values.size(); i++) {
+                    try {
+                        Integer.parseInt(values.get(i));
+                        if(i < values.size() - 1) {
+                            query += values.get(i) + ",";
+                        }
+                        else {
+                            query += values.get(i) + ")";  
+                        }
+                    } catch(NumberFormatException ex) {
+                        if(i < values.size() - 1) {
+                            query += "'" + values.get(i) + "',";    
+                        }
+                        else {
+                            query += "'" + values.get(i) + "')";
+                        }
+                    }
+                }
+                int res = stmt.executeUpdate(query);
                 return res;
             } else {
                 System.out.println("Connection not established - return code " + statusCode);

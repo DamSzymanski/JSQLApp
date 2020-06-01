@@ -15,21 +15,15 @@ import java.util.logging.Logger;
  * @author Damian
  */
 public class MySQLConnection {
-        public Connection connection;
+    public Connection connection;
     public void DatabaseUserAuthentication(String username, String password, String server, int port,String dbName) {
         try {
-            
-         Class.forName("com.mysql.cj.jdbc.Driver");  
-           /* connection = DriverManager.getConnection(
-                "jdbc:mysql://" + server+":"+String.valueOf(port)+";",
-                username, password
-            );    */
-           System.out.println("jdbc:mysql://"+server+":"+String.valueOf(port)+"/"+dbName+";");
-           //nie działa ale skopiownay do managera działa
-          // connection = DriverManager.getConnection("jdbc:mysql://"+server+""+String.valueOf(port)+"/"+dbName+"&autoReconnect=true&failOverReadOnly=false&maxReconnects=10",username, password);
-          //działa ale not established
-          connection = DriverManager.getConnection("jdbc:mysql://" + server + ":" + port, username, password);
-          System.out.println(connection+"Eee");
+        
+          Class.forName("com.mysql.cj.jdbc.Driver");  
+          System.out.println("jdbc:mysql://"+server+":"+String.valueOf(port)+"/"+dbName+";");
+          connection = DriverManager.getConnection("jdbc:mysql://"+server+":"+String.valueOf(port)+"/"+dbName, username, password);
+          //connection = DriverManager.getConnection("jdbc:mysql://" + server + ":" + port, username, password);
+          System.out.println(connection);
         }
         catch(Exception e) {
             System.out.println(e);
