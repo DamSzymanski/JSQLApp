@@ -7,12 +7,12 @@ JSQL is a Java GUI app allowing user to establish connection with and manage MS 
 [Authors](#authors)<br />
 [Licence](#licence)<br />
 [Requirements](#requirements)<br />
-[Applicative requirements](#applicative_requirements)<br />
-[Non-applicative requirements](#non-applicative_requirements)<br />
-[Core components](#core_components)<br />
+[Applicative requirements](#applicative-requirements)<br />
+[Non-applicative requirements](#non-applicative-requirements)<br />
+[Core components](#core-components)<br />
 [Tests](#tests)<br />
-[Test scenarios](#test_scenarios)<br />
-[Test summary](#test_summary)
+[Test scenarios](#test-scenarios)<br />
+[Test summary](#test-summary)
 
 
 ### Authors
