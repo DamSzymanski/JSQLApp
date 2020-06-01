@@ -64,12 +64,12 @@ https://opensource.org/licenses/mit-license.php
    - `AppInit` - core class which stores some of the DB connection's data globally, as well as all the view instances<br />
    - `DataBaseSelectModel` - stores information about user selection in `TableSelectFrame` which are externally used later on by `TableOverviewFrame`<br />
    - `MSSQLConnection` - contains methods used to establish a connection with MS SQL server instance<br />
-   - `MSSQLTransactions` - contains definitions of methods performing MS SQL CRUD operations<br />
+   - `MSSQLTransactions` - contains declarations of methods performing MS SQL CRUD operations<br />
    - `MySQLConnection` - contains methods used to establish a connection with MySQL server instance<br />
-   - `MySQLTransactions` - contains definitions of methods performing MySQL CRUD operations<br />
+   - `MySQLTransactions` - contains declarations of methods performing MySQL CRUD operations<br />
 - Models:<br />
    - `DbInfo` - for future use<br />
-   - `EnginesEnum` - used in major part of methods executing CRUD operations - it determines whether JSQL shoud use libraries for MS SQL or MySQL engine<br />
+   - `EnginesEnum` - used in major part of methods executing CRUD operations - it determines whether JSQL should use libraries for MS SQL or MySQL engine<br />
    - `TableInfo` - for future use<br />
    
 
