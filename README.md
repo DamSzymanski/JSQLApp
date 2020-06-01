@@ -107,7 +107,6 @@ https://opensource.org/licenses/mit-license.php
    - MySQL:<br />
       a) `TableSelectFrame` -> select database -> select table -> press "Select" button<br />
       b) `TableSelectFrame` -> select database -> skip table selection -> press "Select" button<br />   
-      d) `LoginFrame` -> enter incorrect username and password -> enter incorrect server name/address -> select MySQL engine -> press "Login" button<br />   
 
 ### Test summary
 -
