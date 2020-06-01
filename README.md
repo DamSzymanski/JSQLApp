@@ -28,7 +28,7 @@ https://opensource.org/licenses/mit-license.php
 - (for MS SQL) enabled Windows SQL Server Authentication mode
 - Java software
 
-#### Applicative requirements
+### Applicative requirements
 <b>1. User authentication module:</b><br />
    a) User must select DB engine and insert DB user credentials. After successfull authentication user is moved to Table Selection module.<br />
    b) <b>Input</b> - DB engine selection, DB user credentials (username/password)<br />
@@ -58,7 +58,7 @@ https://opensource.org/licenses/mit-license.php
    b) <b>Input</b> - navigating to File -> About<br />
    c) <b>Output</b> - "About" view<br />
    
-#### Non-applicative requirements
+### Non-applicative requirements
 1. Application is designed for a single user session<br />
 2. JSQL is a lightweight GUI application which consumes a minor amount of system resources<br />
 3. Application is free to use and its source code is open to public. Distributed under MIT licence conditions.<br />
