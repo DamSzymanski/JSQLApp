@@ -17,34 +17,34 @@ https://opensource.org/licenses/mit-license.php
 - Java software
 
 #### Applicative requirements
-1. User authentication module<br />
+<b>1. User authentication module:</b><br />
    a) User must select DB engine and insert DB user credentials. After successfull authentication user is moved to Table Selection module.<br />
-   b) Input - DB engine selection, DB user credentials (username/password)<br />
-   c) Output - Table Selection view<br />
-2. DB/Table selection<br />
+   b) <b>Input</b> - DB engine selection, DB user credentials (username/password)<br />
+   c) <b>Output</b> - Table Selection view<br />
+<b>2. DB/Table selection:</b><br />
    a) After selecting database, target table and pressing "Select" button, user is forwarded to Table Overview presenting the information from the specified table which allows for full CRUD operations<br />
-   b) Input - DB/Table selection<br />
-   c) Output - View with contents of the selected table<br />
-3. Deleting row<br />
+   b) <b>Input</b> - DB/Table selection<br />
+   c) <b>Output</b> - View with contents of the selected table<br />
+<b>3. Deleting row:</b><br />
    a) User clicks specific cell within the table which he wants to delete and after loading the initial data from the selected row clicks "Delete" button. If operation finished successfully, he is presented with popup success window. In case of failure and/or empty row selected, the popup displays proper error message.<br />
-   b) Input - selecting row for deletion and pressing "Delete" button<br />
-   c) Output - success/error popup message box<br />
-4.  Updating row<br />
+   b) <b>Input</b> - selecting row for deletion and pressing "Delete" button<br />
+   c) <b>Output</b> - success/error popup message box<br />
+<b>4. Updating row:</b><br />
    a) User clicks specific cell within the table which he wants to update and after loading the initial data and replacing specified text fields with new values clicks "Update" button. If operation finished successfully, he is presented with popup confirmation window. In case of failure and/or empty row selected, the popup displays proper error message.<br />
-   b) Input - wybór pola warunkującego i kliknięcie przycisku, aktualizacja danych i wciśnięcie przycisku "Save" 
-   c) Output - success/error popup message box<br />
-5.  Inserting row<br />
+   b) <b>Input</b> - wybór pola warunkującego i kliknięcie przycisku, aktualizacja danych i wciśnięcie przycisku "Save" 
+   c) <b>Output</b> - success/error popup message box<br />
+5.  <b>Inserting row</b><br />
    a) From the dropdown menu "Actions" user clicks "Add new row". After that, a set of text fields will appear in the bottom part of the window - its structure depends on target table's columns. In order to add a new row to the table, user must click "Insert row" button. If operation finished successfully, he is presented with popup confirmation window. In case of failure and/or empty fields, the popup displays proper error message.<br />
-   b) Input - navigating to Actions -> Add new row, inserting data into newly rendered text fields and clicking "Insert row" button<br />
-   c) Output - success/error popup message box<br />
-6. Logging out<br />
+   b) <b>Input</b> - navigating to Actions -> Add new row, inserting data into newly rendered text fields and clicking "Insert row" button<br />
+   c) <b>Output</b> - success/error popup message box<br />
+<b>6. Logging out:</b><br />
    a) In order to logout, user must navigate to File -> Logout menu item. After pressing it the current DB session will be closed and user will be redirected back to Login screen.<br />
-   b) Input - navigating to File -> Logout and pressing button<br />
-   c) Output - Login screen<br />
-7. "About" view<br />
+   b) <b>Input</b> - navigating to File -> Logout and pressing button<br />
+   c) <b>Output</b> - Login screen<br />
+<b>7. "About" view:</b><br />
    a) From Table Selection view user can navigate to File -> About. After clicking the menu item the new window will show up, displaying details about project authors/repository<br />
-   b) Input - navigating to File -> About<br />
-   c) Output - "About" view<br />
+   b) <b>Input</b> - navigating to File -> About<br />
+   c) <b>Output</b> - "About" view<br />
    
 #### Non-applicative requirements
 1. Application is designed for a single user session<br />
@@ -55,19 +55,19 @@ https://opensource.org/licenses/mit-license.php
 6. Simple and intuitive interface available to everyone - no special skills required in order to use JSQL.<br />
 
 ## Core components
-- Views:<br />
+- <b>Views:</b><br />
    - `LoginFrame` - intercepts user input and invokes proper DB connection methods dependant on the selected DB engine<br />
    - `TableSelectFrame` - allows user to select database and table he wants to display<br />
    - `TableOverviewFrame` - main view for logged user allowing him to perform various CRUD operations<br />
    - `AboutFrame` - displays basic information about project's authors and repository<br />
-- Classes:<br />
+- <b>Classes:</b><br />
    - `AppInit` - core class which stores some of the DB connection's data globally, as well as all the view instances<br />
    - `DataBaseSelectModel` - stores information about user selection in `TableSelectFrame` which are externally used later on by `TableOverviewFrame`<br />
    - `MSSQLConnection` - contains methods used to establish a connection with MS SQL server instance<br />
    - `MSSQLTransactions` - contains declarations of methods performing MS SQL CRUD operations<br />
    - `MySQLConnection` - contains methods used to establish a connection with MySQL server instance<br />
    - `MySQLTransactions` - contains declarations of methods performing MySQL CRUD operations<br />
-- Models:<br />
+- <b>Models:</b><br />
    - `DbInfo` - for future use<br />
    - `EnginesEnum` - used in major part of methods executing CRUD operations - it determines whether JSQL should use libraries for MS SQL or MySQL engine<br />
    - `TableInfo` - for future use<br />
