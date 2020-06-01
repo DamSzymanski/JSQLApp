@@ -110,4 +110,4 @@ https://opensource.org/licenses/mit-license.php
       d) `LoginFrame` -> enter incorrect username and password -> enter incorrect server name/address -> select MySQL engine -> press "Login" button<br />   
 
 ### Test summary
-
+-
