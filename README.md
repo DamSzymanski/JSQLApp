@@ -141,4 +141,4 @@ Login with incorrect credentials/server address -> currently no fallback availab
 #### Recipient WZR UG
 
 ## UML diagrams
-<img src="https://github.com/DamSzymanski/JSQLApp/blob/master/src/resources/loginUml.png" />
+<img src="https://github.com/DamSzymanski/JSQLApp/blob/master/src/resources/loginUml.PNG" />
