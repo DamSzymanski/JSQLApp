@@ -23,10 +23,10 @@ JSQL is a Java GUI app allowing user to establish connection with and manage MS 
 JSQL is being distributed under MIT licence.
 https://opensource.org/licenses/mit-license.php
 
-### Requirements
+### Requirements (Launch architecture)
 - Existing account on either MS SQL or MySQL server instance
 - (for MS SQL) enabled Windows SQL Server Authentication mode
-- Java software
+- Java software (JRE, JDK for development purposes; version 8)
 
 ### Applicative requirements
 <b>1. User authentication module:</b><br />
@@ -109,4 +109,20 @@ https://opensource.org/licenses/mit-license.php
       b) `TableSelectFrame` -> select database -> skip table selection -> press "Select" button<br />   
 
 ### Test summary
--
+### Status - positive
+#### Test range
+JSQLApp
+#### Version
+1.0.0
+#### Bugs/errors reported in version
+9
+#### Bugs/errors fixed in version 
+8
+#### ClientBugs reported in version
+0
+#### Moved to next version 
+1
+Login with bad credidentials throws uncatched exception. 
+#### Recipient WZR UG
+
+
