@@ -109,8 +109,7 @@ https://opensource.org/licenses/mit-license.php
       b) `TableSelectFrame` -> select database -> skip table selection -> press "Select" button<br />   
 
 ### Test summary
-### Status - 
-+ positive
+### Status -  POSITIVE
 #### Test range
 `JSQLApp`
 #### Version
