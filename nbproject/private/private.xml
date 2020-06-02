@@ -4,13 +4,17 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/studia/zaliczenia/JSQLApp/src/classes/MySQLConnection.java</file>
-            <file>file:/D:/studia/zaliczenia/JSQLApp/src/classes/AppInit.java</file>
             <file>file:/D:/studia/zaliczenia/JSQLApp/src/classes/MSSQLConnection.java</file>
-            <file>file:/D:/studia/zaliczenia/JSQLApp/src/frames/AboutFrame.java</file>
-            <file>file:/D:/studia/zaliczenia/JSQLApp/src/frames/TableOverviewFrame.java</file>
+            <file>file:/D:/studia/zaliczenia/JSQLApp/src/classes/DataBaseSelectModel.java</file>
             <file>file:/D:/studia/zaliczenia/JSQLApp/src/classes/MSSQLTransactions.java</file>
             <file>file:/D:/studia/zaliczenia/JSQLApp/src/classes/MySQLTransactions.java</file>
             <file>file:/D:/studia/zaliczenia/JSQLApp/src/frames/TableSelectFrame.java</file>
+            <file>file:/D:/studia/zaliczenia/JSQLApp/src/models/TableInfo.java</file>
+            <file>file:/D:/studia/zaliczenia/JSQLApp/src/models/DbInfo.java</file>
+            <file>file:/D:/studia/zaliczenia/JSQLApp/src/classes/AppInit.java</file>
+            <file>file:/D:/studia/zaliczenia/JSQLApp/src/frames/AboutFrame.java</file>
+            <file>file:/D:/studia/zaliczenia/JSQLApp/src/frames/TableOverviewFrame.java</file>
+            <file>file:/D:/studia/zaliczenia/JSQLApp/src/models/EnginesEnum.java</file>
             <file>file:/D:/studia/zaliczenia/JSQLApp/src/frames/LoginFrame.java</file>
         </group>
     </open-files>
