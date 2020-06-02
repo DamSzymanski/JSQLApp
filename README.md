@@ -107,7 +107,22 @@ https://opensource.org/licenses/mit-license.php
    - MySQL:<br />
       a) `TableSelectFrame` -> select database -> select table -> press "Select" button<br />
       b) `TableSelectFrame` -> select database -> skip table selection -> press "Select" button<br />   
-
+3. `Table overview frame` <br/>
+   - Delete (Applicative requirements 3.):  <br/>
+      a) Select row -> click "Delete"
+   - Insert (Applicative requirements 5.): <br/>
+      a) Menu "Actions" -> Add new row -> Fill data without ID and foreign key(s) -> Press "Insert row"
+      b) Menu "Actions" -> Add new row -> Fill data with ID and foreign key(s) - Press "Insert row"
+      c) Menu "Actions" -> Add new row -> Press "Insert row"
+      e) Menu "Actions" -> Add new row -> Fill with SQL script ("delete from tableName") -> Press "Insert"
+    - Update (Applicative requirements 4.)
+      a) Select row ->  Fill data without ID and foreign key(s) -> Press "Update"
+      b) Select row ->  Fill data with ID and foreign key(s) -> Press "Update"
+      c) Select row -> Clear all fields -> Press "Update"
+      d) Select row ->  Fill with invalid data -> Press "Update"
+      e) Select row ->  Fill with SQL script ("delete from tableName") -> Press "Update"
+4. Logging out <br/>
+       a) Menu "File" -> Press "Logout"
 ### Test summary
 ### Status -  POSITIVE
 #### Test range
