@@ -140,4 +140,5 @@ https://opensource.org/licenses/mit-license.php
 Login with incorrect credentials/server address -> currently no fallback available.
 #### Recipient WZR UG
 
-
+## UML diagrams
+![LoginFrameUML](/src/resources/loginUml.png)
