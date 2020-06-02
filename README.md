@@ -142,3 +142,6 @@ Login with incorrect credentials/server address -> currently no fallback availab
 
 ## UML diagrams
 <img src="https://github.com/DamSzymanski/JSQLApp/blob/master/src/resources/loginUml.PNG" />
+<img src="https://github.com/DamSzymanski/JSQLApp/blob/master/src/resources/loginSequence.PNG" />
+<img src="https://github.com/DamSzymanski/JSQLApp/blob/master/src/resources/loginUml.PNG" />
+<img src="https://github.com/DamSzymanski/JSQLApp/blob/master/src/resources/loginUml.PNG" />
