@@ -109,19 +109,19 @@ https://opensource.org/licenses/mit-license.php
       b) `TableSelectFrame` -> select database -> skip table selection -> press "Select" button<br />   
 
 ### Test summary
-### Status - positive
+### Status - + positive
 #### Test range
-JSQLApp
+`JSQLApp`
 #### Version
-1.0.0
+`1.0.0`
 #### Bugs/errors reported in version
-9
+`9`
 #### Bugs/errors fixed in version 
-8
+`8`
 #### ClientBugs reported in version
-0
+`0`
 #### Moved to next version 
-1
+`1`
 Login with bad credidentials throws uncatched exception. 
 #### Recipient WZR UG
 
