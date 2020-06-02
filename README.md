@@ -122,7 +122,7 @@ https://opensource.org/licenses/mit-license.php
 `0`
 #### Moved to next version 
 `1`
-Login with bad credidentials throws uncatched exception. 
+Login with incorrect credentials/server address -> currently no fallback available.
 #### Recipient WZR UG
 
 
